@@ -1,0 +1,116 @@
+// // // Import Angular Material
+// @use '@angular/material' as mat;
+
+// // // Include the common styles for Angular Material
+// @include mat.core();
+
+// // // Define the palettes for your theme using the Material Design palettes
+// $frontend-primary: mat.define-palette(mat.$indigo-palette);
+// $frontend-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+// $frontend-warn: mat.define-palette(mat.$red-palette);
+
+// // // Create the theme object
+// $frontend-theme: mat.define-light-theme((
+//   color: (
+//     primary: $frontend-primary,
+//     accent: $frontend-accent,
+//     warn: $frontend-warn,
+//   )
+// ));
+
+// // // Include theme styles for core and each component used in your app
+// @include mat.all-component-themes($frontend-theme);
+
+// // // Global styles
+// * {
+//   font-family: Roboto, Helvetica, sans-serif;
+// }
+
+// // // Define the beige color palette
+// $mat-beige: (
+//   50: rgb(255, 250, 244),
+//   100: rgb(255, 240, 230),
+//   200: rgb(254, 212, 183),
+//   300: rgb(254, 176, 132),
+//   400: rgb(253, 151, 93),
+//   500: rgb(252, 130, 54),
+//   600: rgb(241, 118, 48),
+//   700: rgb(225, 106, 42),
+//   800: rgb(209, 94, 36),
+//   900: rgb(176, 71, 25),
+//   A100: rgb(255, 255, 255),
+//   A200: rgb(255, 250, 244),
+//   A400: rgb(253, 151, 93),
+//   A700: rgb(225, 106, 42)
+// );
+
+// $mat-pink: (
+//   50: rgb(252, 228, 236),
+//   100: rgb(248, 187, 208),
+//   200: rgb(244, 143, 177),
+//   300: rgb(240, 98, 146),
+//   400: rgb(236, 64, 122),
+//   500: rgb(233, 30, 99),
+//   600: rgb(216, 27, 96),
+//   700: rgb(194, 24, 91),
+//   800: rgb(173, 20, 87),
+//   900: rgb(136, 14, 79),
+//   A100: rgb(255, 128, 171),
+//   A200: rgb(255, 64, 129),
+//   A400: rgb(245, 0, 87),
+//   A700: rgb(197, 17, 98),
+// );
+
+// // // Example customization using the "beige" palette
+// // $frontend-primary: mat-palette($mat-beige);
+// // $frontend-accent: mat-palette($mat-pink, A200, A100, A400);
+// // $frontend-warn: mat-palette($mat-amber);
+
+// // // Create a theme with customized colors
+// // $theme: mat-light-theme($primary, $accent, $warn);
+
+// // // Load the customized theme
+// @include angular-material-theme($theme);
+
+// // // Additional styles
+// html, body { height: 100%; }
+// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+// Import Angular Material
+@use '@angular/material' as mat;
+
+// Include the common styles for Angular Material
+@include mat.core();
+
+html,
+body {
+  height: 100%;
+}
+
+
+// Define the palettes for your theme using the Material Design palettes
+$frontend-primary: mat.define-palette(mat.$amber-palette);
+$frontend-accent: mat.define-palette(mat.$green-palette, A200, A100, A400);
+$frontend-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object
+$frontend-theme: mat.define-light-theme((
+  color: (
+    primary: $frontend-primary,
+    accent: $frontend-accent,
+    warn: $frontend-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app
+@include mat.all-component-themes($frontend-theme);
+
+// Global styles
+* {
+  font-family: Roboto, Helvetica, sans-serif;
+}
+
+// Additional styles
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

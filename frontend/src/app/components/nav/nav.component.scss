@@ -1,0 +1,53 @@
+.mat-toolbar {
+  color: #797979;
+  font-style: oblique;
+  background-color: rgba(242, 223, 178, 0.505);
+  display: flex;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  box-shadow: lightgray 4px 4px 20px;
+}
+
+.spacer {
+  flex: 1;
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+li {
+  margin-right: 20px;
+  margin-top: 10px;
+}
+
+a {
+  margin: 0 10px;
+  color: #797977;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+button {
+  font-size: 16px;
+  padding: 10px 20px;
+  margin-bottom: 16px;
+  border: 0;
+  color: #797979;
+  background-color: rgba(255, 255, 255, 0.505);
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: lightgray 4px 4px 20px;
+}
+
+button:hover {
+  color: #797979;
+  background-color: #ffffff91;
+}
+
