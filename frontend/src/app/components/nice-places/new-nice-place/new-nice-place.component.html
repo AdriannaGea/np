@@ -1,0 +1,34 @@
+<mat-card class="form-card">
+  <mat-card-title>Share your nice place with us</mat-card-title>
+  <form>
+    <div class="form-group">
+      <mat-form-field appearance="fill" class="full-width form-field-margin">
+        <mat-label>Titre</mat-label>
+        <input matInput id="title" type="text" formControlName="title" />
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field appearance="fill" class="full-width form-field-margin">
+        <mat-label>Description</mat-label>
+        <textarea matInput id="description" type="text" formControlName="description" rows="4"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field appearance="fill" class="full-width form-field-margin">
+        <mat-label>URL de l'image</mat-label>
+        <input matInput id="imageUrl" type="text" formControlName="imageUrl" />
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field appearance="fill" class="full-width form-field-margin">
+        <mat-label>Lieu</mat-label>
+        <input matInput id="location" type="text" formControlName="location" />
+      </mat-form-field>
+    </div>
+    <div>
+      <button mat-button type="submit" [disabled]="niceForm.invalid">
+        Enregistrer
+      </button>
+    </div>
+  </form>
+</mat-card>

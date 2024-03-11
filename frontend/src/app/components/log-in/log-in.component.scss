@@ -1,0 +1,38 @@
+.form-card {
+  width: 50%;
+  margin: auto;
+  margin-top: 50px;
+  text-align: center;
+  color: #797979;
+  background-color: rgba(255, 255, 255, 0.505);
+  box-shadow: lightgray 4px 4px 20px;
+}
+
+.form-group {
+  margin: 10px auto;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+mat-form-field {
+  width: auto;
+  margin-bottom: 16px;
+}
+
+button {
+  font-size: 16px;
+  padding: 10px 20px;
+  margin-bottom: 16px;
+  border: 0;
+  color: #797979;
+  background-color: rgba(255, 255, 255, 0.505);
+  cursor: pointer;
+  box-shadow: lightgray 4px 4px 20px;
+}
+
+button:hover {
+  color: #797979;
+  background-color: #ffffff91;
+}

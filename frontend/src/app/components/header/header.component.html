@@ -1,0 +1,27 @@
+<div>Welcome</div>
+<!-- Wyszukiwarka -->
+<!-- <mat-form-field>
+  <input matInput placeholder="Search..">
+  <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchText" (click)="clearSearch()">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field> -->
+
+<!-- Przyciski Refresh i Szukaj -->
+<!-- <div>
+  <button mat-raised-button color="primary" (click)="refresh()">Refresh</button>
+  <button mat-raised-button color="primary" (click)="search()">Search</button>
+</div> -->
+
+<!-- Kategorie restauracji -->
+<!-- <div>
+  <mat-button-toggle-group #group="matButtonToggleGroup" >
+    <mat-button-toggle value="chic">Restauracje Chic</mat-button-toggle>
+    <mat-button-toggle value="pascher">Bary Pas Cher</mat-button-toggle>
+    <mat-button-toggle value="chicbars">Bary Chic</mat-button-toggle>
+    <mat-button-toggle value="oldbars">Bary Vieux</mat-button-toggle>
+  </mat-button-toggle-group>
+</div> -->
+
+<app-nice-places *ngFor="let nicePlace of nicePlaces$ | async" [nicePlace]="nicePlace"></app-nice-places>
+
