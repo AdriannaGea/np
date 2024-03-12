@@ -11,7 +11,15 @@ export class JoinUsService {
   constructor(private http: HttpClient) {}
 
   saveUserInfo(formValue: JoinUsValue): Observable<boolean> {
-    return this.http.post(`${environment.apiUrl}/members`, formValue).pipe(
+    const preparSave = {
+      firstName: formValue.personalInfo.firstName,
+      lastName: formValue.personalInfo.lastName,
+      email: formValue.email?.email,
+      phone: formValue.phone,
+      userName: formValue.loginInfo.username,
+      password: formValue.loginInfo.password,
+    };
+    return this.http.post<boolean>(`${environment.apiUrl}/api/members`, preparSave).pipe(
       mapTo(true),
       delay(1000),
       catchError(() => of(false).pipe(delay(1000)))
