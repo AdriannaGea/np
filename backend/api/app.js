@@ -7,7 +7,9 @@ const mysql = require('mysql') // on installe le module mysql avec npm install m
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+
 const cors = require('cors')
+
 
 
 const db = mysql.createConnection({ // on cree une connexion a la base de donnees nodejs
@@ -63,6 +65,7 @@ db.connect((err) => {//ATTENTION IMPORTANT
                     if (err) {
                         res.json(err.message); // afficher les erreurs de requete sql
                     } else {
+
                         let alredyExist = result.some(member => member.email == req.body.email) // on verifie si le membre existe deja
 
 
@@ -76,11 +79,13 @@ db.connect((err) => {//ATTENTION IMPORTANT
                                     res.json(err.message); // afficher les erreurs de requete sql
                                 } else {
                                     db.query('SELECT * FROM members WHERE email = ?', [req.body.email], (err, result) => {
+
                                         if (err) {
                                             res.json(err.message); // afficher les erreurs de requete sql
                                         } else {
                                             res.json(success({
                                                 id: result[0].id,
+
                                                 firstName: result[0].firstName,
                                                 lastName: result[0].lastName,
                                                 email: result[0].email,
@@ -178,7 +183,10 @@ db.connect((err) => {//ATTENTION IMPORTANT
 
 
 
+
         app.use(cors());
+
+
         app.use(config.rootAPI + 'members', MembersRouter) // on modifi avec config.json
 
         app.listen(config.port, () => {
