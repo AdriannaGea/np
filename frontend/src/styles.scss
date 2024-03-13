@@ -114,3 +114,53 @@ $frontend-theme: mat.define-light-theme((
 // Additional styles
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+
+.form-card {
+  width: 50%;
+  margin: auto;
+  margin-top: 50px;
+  text-align: center;
+  color: #797979;
+  background-color: rgba(255, 255, 255, 0.505);
+  box-shadow: lightgray 4px 4px 20px;
+}
+
+.form-group {
+  margin: 10px auto;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+mat-card-title {
+  font-size: x-large;
+  display: flex;
+  justify-content: center;
+}
+
+mat-form-field {
+  width: 45%;
+  &.full-width {
+    width: 80%;
+    margin-left: 10%;
+  }
+}
+
+button {
+  font-size: 16px;
+  padding: 10px 20px;
+  margin-bottom: 16px;
+  border: 0;
+  color: #b04719;
+  background-color: #feb084;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+
+}
+button:hover {
+  color: #fc8236;
+  background-color: #fed4b7;
+}

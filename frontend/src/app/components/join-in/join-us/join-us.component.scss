@@ -1,32 +1,7 @@
-.main-form {
-  width: 60%;
-  margin: 0 auto;
-  padding: 30px;
-  position: relative;
-}
-
-mat-card-title {
-  font-size: x-large;
-  display: flex;
-  justify-content: center;
-}
-
-mat-form-field {
-  width: 45%;
-  &.full-width {
-    width: 80%;
-    margin-left: 10%;
-  }
-}
-
 .form-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.form-card {
-  margin: 20px 0;
 }
 
 .mat-radio-button ~ .mat-radio-button {
@@ -38,7 +13,6 @@ display: flex;
 justify-content: center;
   text-align: center;
 }
-
 
 .loading {
   position: absolute;
@@ -55,5 +29,5 @@ justify-content: center;
 }
 
 .error-text {
-  color: red;
+  color: orange;
 }
