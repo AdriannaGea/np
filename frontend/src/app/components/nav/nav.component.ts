@@ -12,6 +12,6 @@ export class NavComponent {
   ngOnInit(): void {}
 
   onAddNewNicePlace(): void {
-    this.router.navigateByUrl('nice-places/add');
+    this.router.navigateByUrl('auth/add');
   }
 }
