@@ -1,17 +1,17 @@
 <mat-card class="form-card">
   <mat-card-title><h2>Share your nice place with us</h2></mat-card-title>
-
+<form [formGroup]="placeForm">
   <div>
     <mat-form-field appearance="fill">
       <mat-label>Titre</mat-label>
-      <input type="text" matInput formControlName="titre" />
+      <input type="text" matInput formControlName="title" />
       <mat-error>Ce champ est requis</mat-error>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field appearance="fill">
       <mat-label>Description</mat-label>
-      <input type="text" matInput formControlName="Description" />
+      <input type="text" matInput formControlName="description" />
       <mat-error>Ce champ est requis</mat-error>
     </mat-form-field>
   </div>
@@ -28,6 +28,7 @@
     </mat-form-field>
   </div>
   <div>
-    <button mat-button>Enregistrer</button>
+    <button mat-button (click)="onSubmitForm()">Enregistrer</button>
   </div>
+</form>
 </mat-card>

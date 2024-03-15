@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, map, tap } from 'rxjs';
 import { NicePlace } from '../models/nice-place.model';
@@ -11,7 +11,7 @@ import { NicePlacesService } from '../services/nice-places.service';
   styleUrls: ['./new-nice-place.component.scss'],
 })
 export class NewNicePlaceComponent {
-  niceForm!: FormGroup;
+  placeForm!: FormGroup;
   newNicePlacePreview$!: Observable<NicePlace>;
   urlRegex!: RegExp;
 
@@ -22,35 +22,34 @@ export class NewNicePlaceComponent {
   ) {}
 
   ngOnInit(): void {
-    // this.urlRegex =
-    //   /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/;
-    // this.niceForm = this.fb.group(
-    //   {
-    //     title: [null, [Validators.required]],
-    //     description: [null, [Validators.required]],
-    //     imageUrl: [
-    //       null,
-    //       [Validators.required, Validators.pattern(this.urlRegex)],
-    //     ],
-    //     location: [null],
-    //   },
-    //   {
-    //     updateOn: 'blur',
-    //   }
-    // );
-    // this.newNicePlacePreview$ = this.niceForm.valueChanges.pipe(
-    //   map((formValue: any) => ({
-    //     ...formValue,
-    //     createdDate: new Date(),
-    //     likes: 0,
-    //     id: 0,
-    //   }))
-    // );
+    this.placeForm = this.fb.group(
+      {
+        title: [null, [Validators.required]],
+        description: [null, [Validators.required]],
+        imageUrl: [
+          null,
+          [Validators.required, Validators.pattern(this.urlRegex)],
+        ],
+        location: [null],
+      },
+      {
+        updateOn: 'blur',
+      }
+    );
+
+    this.newNicePlacePreview$ = this.placeForm.valueChanges.pipe(
+      map((formValue: any) => ({
+        ...formValue,
+        createdDate: new Date(),
+        likes: 0,
+        id: 0,
+      }))
+    );
   }
 
   onSubmitForm() {
     this.nps
-      .addNewPlace(this.niceForm.value)
+      .addNewPlace(this.placeForm.value)
       .pipe(tap(() => this.router.navigateByUrl('/nice-places')))
       .subscribe();
   }

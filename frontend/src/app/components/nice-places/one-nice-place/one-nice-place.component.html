@@ -1,1 +1,17 @@
-<p>one-nice-place works!</p>
+<mat-card *ngIf="nicePlace$ | async as nicePlace" [ngClass]="{ liked: buttonText === 'Unlike!' }">
+  <mat-card-header>
+    <mat-card-title>
+      <h2>{{ nicePlace.title | uppercase }}</h2>
+    </mat-card-title>
+    <mat-card-subtitle>
+      Mis en ligne {{ nicePlace.createdDate | date : "à HH:mm, le d MMMM yyyy" }}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <img mat-card-image [src]="nicePlace.imageUrl" [alt]="nicePlace.title" />
+  <mat-card-content>
+    <p>{{ nicePlace.description }}</p>
+    <p *ngIf="nicePlace.location">Nice place in {{ nicePlace.location }}</p>
+    <!-- <p>
+      <button type="button" (click)="onLike(nicePlace.id)">{{ buttonText }}</button>
+      <span>🤌 {{ nicePlace.likes }}</span>
+    </p> -->
