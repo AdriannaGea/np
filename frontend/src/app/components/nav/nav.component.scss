@@ -44,10 +44,10 @@ button {
   cursor: pointer;
   margin-top: 10px;
   box-shadow: lightgray 4px 4px 20px;
-}
 
-button:hover {
+
+ &:hover {
   color: #797979;
   background-color: #ffffff91;
 }
-
+}

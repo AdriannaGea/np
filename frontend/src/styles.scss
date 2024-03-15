@@ -76,9 +76,8 @@
 // html, body { height: 100%; }
 // body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-
 // Import Angular Material
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
 // Include the common styles for Angular Material
 @include mat.core();
@@ -88,20 +87,21 @@ body {
   height: 100%;
 }
 
-
 // Define the palettes for your theme using the Material Design palettes
 $frontend-primary: mat.define-palette(mat.$amber-palette);
 $frontend-accent: mat.define-palette(mat.$green-palette, A200, A100, A400);
 $frontend-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object
-$frontend-theme: mat.define-light-theme((
-  color: (
-    primary: $frontend-primary,
-    accent: $frontend-accent,
-    warn: $frontend-warn,
+$frontend-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $frontend-primary,
+      accent: $frontend-accent,
+      warn: $frontend-warn,
+    ),
   )
-));
+);
 
 // Include theme styles for core and each component used in your app
 @include mat.all-component-themes($frontend-theme);
@@ -112,9 +112,15 @@ $frontend-theme: mat.define-light-theme((
 }
 
 // Additional styles
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: rgba(242, 223, 178, 0.505);
+}
 
 
 .form-card {
@@ -122,8 +128,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin: auto;
   margin-top: 50px;
   text-align: center;
-  color: #797979;
-  background-color: rgba(255, 255, 255, 0.505);
+  color: #db865e;
+  background-color: rgba(242, 204, 178, 0.505);
   box-shadow: lightgray 4px 4px 20px;
 }
 
@@ -133,12 +139,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: rgba(178, 242, 215, 0.505);
 }
 
 mat-card-title {
   font-size: x-large;
   display: flex;
   justify-content: center;
+
 }
 
 mat-form-field {
@@ -147,6 +155,7 @@ mat-form-field {
     width: 80%;
     margin-left: 10%;
   }
+
 }
 
 button {
@@ -154,11 +163,10 @@ button {
   padding: 10px 20px;
   margin-bottom: 16px;
   border: 0;
-  color: #b04719;
+  color: #db865e;
   background-color: #feb084;
   cursor: pointer;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-
 }
 button:hover {
   color: #fc8236;

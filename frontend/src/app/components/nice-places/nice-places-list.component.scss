@@ -1,0 +1,45 @@
+.card {
+  background-color: rgba(242, 204, 178, 0.505);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: auto;
+  margin: 40px;
+}
+
+.search-content {
+  display: flex;
+  gap: 20px;
+}
+
+mat-form-field {
+  flex: 1;
+}
+
+.search-input {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.search-button {
+  align-self: flex-end !important;
+  margin-top: 20px;
+}
+
+.toggle-container {
+  border: 1px solid;
+  border-radius: 5px;
+  border-color: beige;
+  display: inline-block;
+}
+
+.mat-button-toggle {
+  margin: 10px;
+}
+
+.mat-button-toggle.mat-button-toggle-checked {
+  background-color: beige;
+}
+

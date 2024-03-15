@@ -1,51 +1,9 @@
-.main-content {
-  box-sizing: border-box;
-  padding: 80px;
-  max-width: 800px;
-  margin: auto;
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 100%;
-  margin-bottom: 0.25rem;
-}
-
-.col {
-  flex-basis: 0;
-  flex-grow: 1;
-  max-width: 100%;
-  margin: 0 0 0 1rem;
-  padding-top: 0px;
-}
-
-.nice-place-card {
-  box-sizing: border-box;
-  margin: 20px 0;
-  padding: 10px 30px;
-  box-shadow: lightgray 4px 4px 20px;
-
-  img {
-    width: 100%;
-  }
-
-  h2 {
-    margin-bottom: 0;
-  }
-
-  p {
-    font-weight: 300;
-    font-size: 16px;
-  }
-}
-
-a {
-  font-size: small;
-  color: #333;
-  text-decoration: solid;
-
-  &:hover {
-    text-decoration: underline;
-  }
+.header {
+  background-image: url("https://img.freepik.com/darmowe-zdjecie/mapa-metra-w-paryzu-z-lupa_23-2148232434.jpg?t=st=1710498123~exp=1710501723~hmac=cfd70fed89cb3e1222930369937f84bf8ab6df0d8972cdee6a22326843219a9c&w=1380");
+  background-size: cover;
+  // background-position: top;
+  height: 650px;
+  width: 100%;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
