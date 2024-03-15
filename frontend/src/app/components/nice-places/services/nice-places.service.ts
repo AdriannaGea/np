@@ -1,22 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { NicePlace } from '../models/nice-place.model';
+import { environment } from 'src/app/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NicePlacesService {
+  private apiUrl = environment.apiUrl;
+
   constructor(private http: HttpClient) {}
 
   getAllNicePlaces(): Observable<NicePlace[]> {
-    return this.http.get<NicePlace[]>('http://localhost:3000/niceplaces');
-  }
-
-  getNicePlaceById(nicePlaceId: number): Observable<NicePlace> {
-    return this.http.get<NicePlace>(
-      `http://localhost:3000/niceplaces/${nicePlaceId}`
-    );
+    return this.http.get<NicePlace[]>(`${this.apiUrl}/niceplaces`);
   }
 
   addNewPlace(formValue: {
@@ -25,24 +23,10 @@ export class NicePlacesService {
     imageUrl: string;
     location?: string;
   }): Observable<NicePlace> {
-    return this.getAllNicePlaces().pipe(
-      map((nicePlaces) => [...nicePlaces].sort((a, b) => a.id - b.id)),
-      map(
-        (sortedNicePlaces) =>
-          sortedNicePlaces[sortedNicePlaces.length - 1]
-      ),
-      map((previousNicePlace) => ({
-        ...formValue,
-        likes: 0,
-        createdDate: new Date(),
-        id: previousNicePlace.id + 1,
-      })),
-      switchMap((newNicePlace) =>
-        this.http.post<NicePlace>(
-          'http://localhost:3000/niceplaces',
-          newNicePlace
-        )
-      )
-    );
+    return this.http.post<NicePlace>(`${this.apiUrl}/niceplaces`, formValue);
+  }
+
+  getNicePlaceById(nicePlaceId: number): Observable<NicePlace> {
+    return this.http.get<NicePlace>(`${this.apiUrl}/niceplaces/${nicePlaceId}`);
   }
 }

@@ -1,0 +1,23 @@
+<div class="row">
+  <div *ngFor="let nicePlace of nicePlaces">
+    <mat-card class="nice-place-card">
+      <mat-card-header>
+        <mat-card-title>
+          <h2>{{ nicePlace.title | uppercase }}</h2>
+        </mat-card-title>
+        <mat-card-subtitle>
+          Mis en ligne {{ nicePlace.createdDate | date : "à HH:mm, le d MMMM yyyy" }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <img mat-card-image [src]="nicePlace.imageUrl" [alt]="nicePlace.title" />
+      <mat-card-content>
+        <p *ngIf="nicePlace.location">Nice place in {{ nicePlace.location }}</p>
+       <button mat-button (click)="onViewNicePlace(nicePlace)">VIEW</button>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div *ngIf="!nicePlaces || nicePlaces.length === 0">
+    Brak dostępnych miejsc.
+  </div>
+</div>

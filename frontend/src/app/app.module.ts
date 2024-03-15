@@ -9,6 +9,7 @@ import { JoinUsModule } from './components/join-in/join-us.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthModule } from './auth/auth.module';
 import { AuthRoutingModule } from './auth/auth-routing.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +23,7 @@ import { AuthRoutingModule } from './auth/auth-routing.module';
     MaterialsModule,
     AuthModule,
     AuthRoutingModule,
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,0 +1,19 @@
+mat-list-item {
+  display: flex;
+  width: 100%;
+  border-bottom: thin solid #555;
+}
+
+.comments-row {
+  display: flex;
+  width: 100%;
+}
+
+mat-form-field {
+width: auto;
+}
+
+.comment-text {
+  max-width: 100%;
+  word-break: break-word
+}
