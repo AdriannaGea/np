@@ -25,7 +25,7 @@ const routes: Routes = [
   },
   {
     title: 'NP | Just one ',
-    path: 'nice-place',
+    path: 'nice-places/:id',
     component: OneNicePlaceComponent,
     // canActivate: [AuthGuard],
   },

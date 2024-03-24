@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NicePlacesService } from '../services/nice-places.service';
-import { ActivatedRoute } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, map, tap } from 'rxjs';
 import { NicePlace } from '../models/nice-place.model';
 
 @Component({
@@ -19,27 +19,28 @@ export class OneNicePlaceComponent {
 
   constructor(private nps: NicePlacesService, private route: ActivatedRoute) {}
 
-
   ngOnInit() {
     this.buttonText = 'Like It!';
     const nicePlaceId = +this.route.snapshot.params['id'];
-    this.nicePlace$ = this.nps.getNicePlaceById(nicePlaceId);
+    this.nicePlace$ = this.nps
+      .getNicePlaceById(nicePlaceId)
+      .pipe(map((response) => response.result));
   }
 
-  // onLike(nicePlaceId: number) {
-  //   if (this.buttonText === 'Like It!') {
-  //     this.nicePlace$ = this.nps
-  //       .likeNicePlaceById(nicePlaceId, 'like')
-  //       .pipe(tap(() => (this.buttonText = 'Unlike!')));
-  //   } else {
-  //     this.nicePlace$ = this.nps
-  //       .likeNicePlaceById(nicePlaceId, 'unlike')
-  //       .pipe(tap(() => (this.buttonText = 'Like It!')));
-  //   }
-  // }
+  onLike(perfectShoeId: number) {
+    if (this.buttonText === 'Like It!') {
+      this.nicePlace$ = this.nps
+        .likeNicePlaceById(perfectShoeId, 'like')
+        .pipe(tap(() => (this.buttonText = 'Unlike!')));
+    } else {
+      this.nicePlace$ = this.nps
+        .likeNicePlaceById(perfectShoeId, 'unlike')
+        .pipe(tap(() => (this.buttonText = 'Like It!')));
+    }
+  }
 
   // onNewComment(comment: string) {
-  //   const NicePlaceId = +this.route.snapshot.params['id'];
-  //   this.postCommented.emit({ comment, nicePlaceId });
+  //   const perfectShoeId = +this.route.snapshot.params['id'];
+  //   this.postCommented.emit({ comment, perfectShoeId });
   // }
 }

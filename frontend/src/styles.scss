@@ -76,6 +76,9 @@
 // html, body { height: 100%; }
 // body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+// Pink Nice
+// rgba(255, 192, 203, 0.505)
+
 // Import Angular Material
 @use "@angular/material" as mat;
 
@@ -125,8 +128,7 @@ body {
 
 .form-card {
   width: 50%;
-  margin: auto;
-  margin-top: 50px;
+  margin: 50px auto;
   text-align: center;
   color: #db865e;
   background-color: rgba(242, 204, 178, 0.505);
