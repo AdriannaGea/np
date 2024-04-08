@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const mysql = require("mysql"); // on installe le module mysql avec npm install mysql
+const mysql = require("mysql");
 const cors = require("cors");
 const config = require("./config");
 const { success, error } = require("./functions");
@@ -10,47 +10,58 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-const db = mysql.createConnection({ // on cree une connexion a la base de donnees nodejs
+const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
   database: "mydatabase",
 });
 
-db.connect((err) => { //ATTENTION IMPORTANT
+db.connect((err) => {
+  //ATTENTION IMPORTANT
   if (err) {
     console.log(err); // afficher les erreurs de connexion a la base de donnees
-    //ont met tout notre code dans le else car on veut que le serveur tourne toujours
   } else {
     console.log("Connecté à la base de données"); // afficher le message de connexion a la base de donnees
-    // recuperation des membres de la base de donnees
 
     // Router pour les endpoints concernant les lieux
     const NicePlacesRouter = express.Router();
 
-    // Endpoint pour récupérer tous les lieux
+    // Endpoint pour récupérer tous les lieux (ajouté ici)
     NicePlacesRouter.route("/")
       .get((req, res) => {
         // Requête SQL pour sélectionner tous les lieux
         db.query("SELECT * FROM niceplaces", (err, result) => {
           if (err) {
-            console.error("Error executing SQL query:", err.message);
+            console.error(
+              "Erreur lors de l'exécution de la requête SQL:",
+              err.message
+            );
             res.json(error(err.message));
           } else {
-            console.log("Nice places retrieved from the database:", result);
             res.json(success(Array.isArray(result) ? result : [result]));
           }
         });
       })
       .post((req, res) => {
         // Extraction des données du corps de la requête
-        const { title, description, imageUrl, location } = req.body;
+        const { title, description, imageUrl, location, tags } = req.body;
         // Requête SQL pour insérer un nouveau lieu dans la base de données
         const createdDate = new Date();
         const likes = 0;
+        const dislikes = 0;
         db.query(
-          "INSERT INTO niceplaces (title, description, imageUrl, createdDate, likes, location) VALUES (?, ?, ?, ?, ?, ?)",
-          [title, description, imageUrl, createdDate, likes, location],
+          "INSERT INTO niceplaces (title, description, imageUrl, createdDate, location, likes, dislikes, tags) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+          [
+            title,
+            description,
+            imageUrl,
+            createdDate,
+            location,
+            likes,
+            dislikes,
+            tags,
+          ],
           (err, result) => {
             if (err) {
               res.json(err.message);
@@ -72,7 +83,7 @@ db.connect((err) => { //ATTENTION IMPORTANT
         );
       });
 
-    // Endpoint pour un lieu spécifique (par ID)
+    // Endpoint pour un lieu spécifique (par ID) (ajouté ici)
     NicePlacesRouter.route("/:id")
       .get((req, res) => {
         // Requête SQL pour sélectionner un lieu spécifique par son ID
@@ -94,18 +105,28 @@ db.connect((err) => { //ATTENTION IMPORTANT
       })
       .put((req, res) => {
         // Extraction des données du corps de la requête
-        const { title, description, imageUrl, createdDate, likes, location } =
-          req.body;
+        const {
+          title,
+          description,
+          imageUrl,
+          createdDate,
+          location,
+          likes,
+          dislikes,
+          tags,
+        } = req.body;
         // Requête SQL pour mettre à jour un lieu spécifique par son ID
         db.query(
-          "UPDATE niceplaces SET title = ?, description = ?, imageUrl = ?, createdDate = ?, likes = ?, location = ? WHERE id = ?",
+          "UPDATE niceplaces SET title = ?, description = ?, imageUrl = ?, createdDate = ?, location = ?, likes = ?, dislikes = ?, tags = ? WHERE id = ?",
           [
             title,
             description,
             imageUrl,
             createdDate,
-            likes,
             location,
+            likes,
+            dislikes,
+            tags,
             req.params.id,
           ],
           (err, result) => {
@@ -142,16 +163,62 @@ db.connect((err) => { //ATTENTION IMPORTANT
           }
         );
       });
+    // Route pour "liker" un lieu
+    NicePlacesRouter.route("/:id/like").put((req, res) => {
+      db.query(
+        "UPDATE niceplaces SET likes = likes + 1 WHERE id = ?",
+        [req.params.id],
+        (err, result) => {
+          if (err) {
+            res.json(error(err.message));
+          } else {
+            db.query(
+              "SELECT * FROM niceplaces WHERE id = ?",
+              [req.params.id],
+              (err, result) => {
+                if (err) {
+                  res.json(error(err.message));
+                } else {
+                  res.json(success(result[0]));
+                }
+              }
+            );
+          }
+        }
+      );
+    });
 
-    // Utilisation du routeur pour les endpoints relatifs aux lieux
+    // Route pour "disliker" un lieu
+    NicePlacesRouter.route("/:id/dislike").put((req, res) => {
+      db.query(
+        "UPDATE niceplaces SET dislikes = dislikes + 1 WHERE id = ?",
+        [req.params.id],
+        (err, result) => {
+          if (err) {
+            res.json(error(err.message));
+          } else {
+            db.query(
+              "SELECT * FROM niceplaces WHERE id = ?",
+              [req.params.id],
+              (err, result) => {
+                if (err) {
+                  res.json(error(err.message));
+                } else {
+                  res.json(success(result[0]));
+                }
+              }
+            );
+          }
+        }
+      );
+    });
+
     app.use(config.rootAPI + "niceplaces", NicePlacesRouter);
-
-    // -------------------------------------------------------- //
 
     // Router pour les endpoints concernant les membres
     const MembersRouter = express.Router();
 
-    // Endpoint pour récupérer tous les membres
+    // Endpoint pour récupérer tous les membres (ajouté ici)
     MembersRouter.route("/")
       .get((req, res) => {
         // Vérification du paramètre max pour la pagination
@@ -169,7 +236,7 @@ db.connect((err) => { //ATTENTION IMPORTANT
             }
           );
         } else if (req.query.max != undefined) {
-          res.json(error("wrong max value"));
+          res.json(error("Mauvaise valeur pour max"));
         } else {
           // Requête SQL pour sélectionner tous les membres
           db.query(" SELECT * FROM members", (err, result) => {
@@ -181,7 +248,6 @@ db.connect((err) => { //ATTENTION IMPORTANT
           });
         }
       })
-      // Endpoint pour ajouter un nouveau membre
       .post((req, res) => {
         // Vérification si le membre existe déjà
         db.query("SELECT * FROM members", (err, result) => {
@@ -193,7 +259,7 @@ db.connect((err) => { //ATTENTION IMPORTANT
             );
 
             if (alredyExist == true) {
-              res.json(error("already exist"));
+              res.json(error("déjà existant"));
             } else {
               // Requête SQL pour insérer un nouveau membre
               db.query(
@@ -227,7 +293,7 @@ db.connect((err) => { //ATTENTION IMPORTANT
                               phone: result[0].phone,
                               userName: result[0].username,
                               password: result[0].password,
-                            }) // afficher les resultats de la requete sql
+                            })
                           );
                         }
                       }
@@ -240,10 +306,10 @@ db.connect((err) => { //ATTENTION IMPORTANT
         });
       });
 
-    // Endpoint pour un membre spécifique (par ID)
+    // Endpoint pour un membre spécifique (par ID) (ajouté ici)
     MembersRouter.route("/:id")
+      // Récupération d'un membre par ID
       .get((req, res) => {
-        // Requête SQL pour sélectionner un membre spécifique par son ID
         db.query(
           "SELECT * FROM members WHERE id = ?",
           [req.params.id],
@@ -251,19 +317,19 @@ db.connect((err) => { //ATTENTION IMPORTANT
             if (err) {
               res.json(err.message);
             } else {
+              // Si un résultat est trouvé, renvoyer les données du membre
               if (result[0] != undefined) {
-                // si le membre existe
-                res.json(success(result[0])); // afficher les resultats de la requete sql
+                res.json(success(result[0]));
               } else {
-                // si le membre n'existe pas
+                // Sinon, renvoyer une erreur indiquant que le membre n'a pas été trouvé
                 res.json(error("Membre non trouvé"));
               }
             }
           }
         );
       })
+      // Modification d'un membre par ID
       .put((req, res) => {
-        // Vérification si le membre existe
         db.query(
           "SELECT * FROM members WHERE id = ?",
           [req.params.id],
@@ -272,7 +338,7 @@ db.connect((err) => { //ATTENTION IMPORTANT
               res.json(err.message);
             } else {
               if (result[0] != undefined) {
-                // Requête SQL pour mettre à jour un membre spécifique par son ID
+                // Mettre à jour le nom du membre dans la base de données
                 db.query(
                   "UPDATE members SET name = ? WHERE id = ?",
                   [req.body.name, req.params.id],
@@ -280,15 +346,15 @@ db.connect((err) => { //ATTENTION IMPORTANT
                     if (err) {
                       res.json(err.message);
                     } else {
-                      // Sélection du membre mis à jour pour le renvoyer en réponse
+                      // Récupérer et renvoyer les nouvelles données du membre
                       db.query(
                         "SELECT * FROM members WHERE id = ?",
                         [req.params.id],
                         (err, result) => {
                           if (err) {
-                            res.json(err.message); // afficher les erreurs de requete sql
+                            res.json(err.message);
                           } else {
-                            res.json(success(result[0])); // afficher les resultats de la requete sql
+                            res.json(success(result[0]));
                           }
                         }
                       );
@@ -296,34 +362,67 @@ db.connect((err) => { //ATTENTION IMPORTANT
                   }
                 );
               } else {
-                // si le membre n'existe pas
-                res.json(error("Membre not found"));
+                // Si le membre n'est pas trouvé, renvoyer une erreur
+                res.json(error("Membre non trouvé"));
               }
             }
           }
         );
       })
+      // Suppression d'un membre par ID
       .delete((req, res) => {
-        // Requête SQL pour supprimer un membre spécifique par son ID
         db.query(
           "DELETE FROM members WHERE id = ?",
           [req.params.id],
           (err, result) => {
             if (err) {
-              res.json(err.message); // afficher les erreurs de requete sql
+              res.json(err.message);
             } else {
-              res.json(success(result)); // afficher les resultats de la requete sql
+              // Renvoyer une réponse de succès après suppression
+              res.json(success(result));
             }
           }
         );
       });
 
-    // Utilisation du routeur pour les endpoints relatifs aux membres
-    app.use(config.rootAPI + "members", MembersRouter); // on modifi avec config.json
+    // Utilisation du routeur pour l'endpoint "members"
+    app.use(config.rootAPI + "members", MembersRouter);
 
-    // Démarrage du serveur
+    // Endpoint pour la connexion d'un utilisateur
+    app.post("/login", (req, res) => {
+      const { email, password } = req.body;
+      db.query(
+        "SELECT * FROM members WHERE email = ?",
+        [email],
+        async (err, result) => {
+          if (err) {
+            res.json(error(err.message));
+          } else {
+            if (result.length > 0) {
+              // Vérification du mot de passe hashé
+              const isPasswordValid = await bcrypt.compare(
+                password,
+                result[0].password
+              );
+
+              if (isPasswordValid) {
+                // Si le mot de passe est valide, renvoyer un token (à générer)
+                res.json(success({ token: "YourGeneratedTokenHere" }));
+              } else {
+                // Si le mot de passe est invalide, renvoyer une erreur
+                res.json(error("Invalid credentials"));
+              }
+            } else {
+              // Si l'email n'est pas trouvé, renvoyer une erreur
+              res.json(error("Invalid credentials"));
+            }
+          }
+        }
+      );
+    });
+
     app.listen(config.port, () => {
-      console.log("Serveer started");
+      console.log("Serveur démarré");
     });
   }
 });
