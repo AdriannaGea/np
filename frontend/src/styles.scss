@@ -1,32 +1,6 @@
-// // // Import Angular Material
-// @use '@angular/material' as mat;
+// Import Angular Material
 
-// // // Include the common styles for Angular Material
-// @include mat.core();
-
-// // // Define the palettes for your theme using the Material Design palettes
-// $frontend-primary: mat.define-palette(mat.$indigo-palette);
-// $frontend-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-// $frontend-warn: mat.define-palette(mat.$red-palette);
-
-// // // Create the theme object
-// $frontend-theme: mat.define-light-theme((
-//   color: (
-//     primary: $frontend-primary,
-//     accent: $frontend-accent,
-//     warn: $frontend-warn,
-//   )
-// ));
-
-// // // Include theme styles for core and each component used in your app
-// @include mat.all-component-themes($frontend-theme);
-
-// // // Global styles
-// * {
-//   font-family: Roboto, Helvetica, sans-serif;
-// }
-
-// // // Define the beige color palette
+// Define the beige color palette
 // $mat-beige: (
 //   50: rgb(255, 250, 244),
 //   100: rgb(255, 240, 230),
@@ -76,32 +50,31 @@
 // html, body { height: 100%; }
 // body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+// Pink Nice
+// rgba(255, 192, 203, 0.505)
 
 // Import Angular Material
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
 // Include the common styles for Angular Material
 @include mat.core();
 
-html,
-body {
-  height: 100%;
-}
-
 
 // Define the palettes for your theme using the Material Design palettes
 $frontend-primary: mat.define-palette(mat.$amber-palette);
-$frontend-accent: mat.define-palette(mat.$green-palette, A200, A100, A400);
+$frontend-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 $frontend-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object
-$frontend-theme: mat.define-light-theme((
-  color: (
-    primary: $frontend-primary,
-    accent: $frontend-accent,
-    warn: $frontend-warn,
+$frontend-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $frontend-primary,
+      accent: $frontend-accent,
+      warn: $frontend-warn,
+    ),
   )
-));
+);
 
 // Include theme styles for core and each component used in your app
 @include mat.all-component-themes($frontend-theme);
@@ -112,18 +85,22 @@ $frontend-theme: mat.define-light-theme((
 }
 
 // Additional styles
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: rgba(242, 223, 178, 0.505);
+}
 
 .form-card {
   width: 50%;
-  margin: auto;
-  margin-top: 50px;
+  margin: 50px auto;
   text-align: center;
-  color: #797979;
-  background-color: rgba(255, 255, 255, 0.505);
+  color: #db865e;
+  background-color: rgba(242, 204, 178, 0.505);
   box-shadow: lightgray 4px 4px 20px;
 }
 
@@ -133,12 +110,29 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: rgba(178, 242, 215, 0.505);
 }
 
 mat-card-title {
   font-size: x-large;
   display: flex;
   justify-content: center;
+
+}
+
+button {
+  font-size: 16px;
+  padding: 10px 20px;
+  margin-bottom: 16px;
+  border: 0;
+  color: #db865e;
+  background-color: #feb084;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+button:hover {
+  color: #fc8236;
+  background-color: #fed4b7;
 }
 
 mat-form-field {
@@ -147,20 +141,11 @@ mat-form-field {
     width: 80%;
     margin-left: 10%;
   }
-}
-
-button {
-  font-size: 16px;
-  padding: 10px 20px;
-  margin-bottom: 16px;
-  border: 0;
-  color: #b04719;
-  background-color: #feb084;
-  cursor: pointer;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 
 }
-button:hover {
-  color: #fc8236;
-  background-color: #fed4b7;
+
+// Background mat-field
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: white  !important;
 }
+

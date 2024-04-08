@@ -1,1 +1,59 @@
+<div class="card">
+  <form [formGroup]="searchPlaces">
+  <mat-card-title><h2>Find a nice place</h2></mat-card-title>
+  <div class="card-content">
+    <div class="search-content">
+
+<mat-form-field floatLabel="always" appearance="outline" class="white-backgrounded-field">
+        <input matInput placeholder="Search" />
+      </mat-form-field>
+
+<mat-form-field floatLabel="always" appearance="outline" class="white-backgrounded-field">
+        <mat-label>Favorite food</mat-label>
+        <mat-select formControlName="food" multiple>
+            <mat-option value="tous" (click)="selectAll('food', ['italian', 'asian'])">Tous</mat-option>
+            <mat-option value="italian" (click)="onOptionSelect('italian', 'food')">Italian</mat-option>
+            <mat-option value="asian" (click)="onOptionSelect('asian', 'food')">Asian</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+<mat-form-field floatLabel="always" appearance="outline" class="white-backgrounded-field">
+        <mat-label>Drinks</mat-label>
+      <mat-select formControlName="drinks" multiple>
+            <mat-option value="tous" (click)="selectAll('drinks', ['alcoolDrinks', 'nonAlccolDrinks'])">Tous</mat-option>
+            <mat-option value="alcoolDrinks" (click)="onOptionSelect('alcoolDrinks', 'drinks')">Non alcool drinks</mat-option>
+            <mat-option value="nonAlccolDrinks" (click)="onOptionSelect('nonAlccolDrinks', 'drinks')">Non alcool drinks</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+<mat-form-field floatLabel="always" appearance="outline" class="white-backgrounded-field">
+        <mat-label>Ambience</mat-label>
+        <mat-select formControlName="ambience" multiple>
+            <mat-option value="tous" (click)="selectAll('ambience', ['view', 'calm', 'cozy', 'romantic'])">Tous</mat-option>
+            <mat-option value="view" (click)="onOptionSelect('view', 'ambience')">View</mat-option>
+            <mat-option value="calm" (click)="onOptionSelect('calm', 'ambience')">Calm</mat-option>
+            <mat-option value="cozy" (click)="onOptionSelect('cozy', 'ambience')">Cozy</mat-option>
+            <mat-option value="romantic" (click)="onOptionSelect('romantic', 'ambience')">Romantic</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+
+    <div class="toggle-container">
+      <mat-button-toggle-group name="categories" aria-label="categories" multiple>
+        <mat-button-toggle value="bar">Bar</mat-button-toggle>
+        <mat-button-toggle value="resto">Resto</mat-button-toggle>
+        <mat-button-toggle value="nouveauté">Nouveauté</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+
+  </div>
+    <div class="search-button">
+      <button mat-button  type="submit">Search</button>
+      <button mat-button  type="reset">Refresh</button>
+    </div>
+</form>
+</div>
+
 <app-nice-places></app-nice-places>

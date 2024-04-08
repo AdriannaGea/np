@@ -1,0 +1,26 @@
+mat-card {
+  background-color: rgb(255, 245, 237);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: auto;
+  margin: 40px;
+}
+
+img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+}
+
+.tags {
+  margin-top: 16px;
+
+  .tag {
+    display: inline-block;
+    margin-right: 8px;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    background-color: #f2f2f2;
+  }
+}

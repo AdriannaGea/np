@@ -10,6 +10,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [],
@@ -25,6 +26,10 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatCheckboxModule,
     MatProgressSpinnerModule,
     MatButtonToggleModule,
+    MatListModule,
+    MatFormFieldModule,
+    MatListModule,
+    MatSelectModule,
   ],
 })
 export class MaterialsModule {}

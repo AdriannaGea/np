@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-log-in',
@@ -8,11 +9,37 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./log-in.component.scss'],
 })
 export class LogInComponent {
-  constructor(private auth: AuthService, private router: Router) {}
+  loginForm!: FormGroup; // Initialisation du formulaire de connexion
 
-  ngOnInit(): void {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
-  onLogin(): void {
-     this.auth.login();
+  // Initialisation du formulaire lors du chargement du composant
+  ngOnInit(): void {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+    });
+  }
+
+  // Méthode pour gérer l'événement de connexion
+  onLogin() {
+    const email = this.loginForm.get('email')?.value;
+    const password = this.loginForm.get('password')?.value;
+
+    // Appel du service d'authentification pour la connexion
+    this.authService.login(email, password).subscribe(
+      (data) => {
+        // Si la connexion réussit, rediriger l'utilisateur vers la page '/nice-places'
+        this.router.navigate(['/nice-places']);
+      },
+      (error) => {
+        // Gérer les erreurs de connexion ici, par exemple afficher un message d'erreur
+        console.error('Erreur de connexion:', error);
+      }
+    );
   }
 }
