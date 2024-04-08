@@ -1,11 +1,12 @@
-export class NicePlace {
-
-  id!: number;
-  title!: string;
-  description!: string;
-  imageUrl!: string;
-  createdDate!: Date;
-  likes!: number;
+export interface NicePlace {
+  id: number;
+  title: string;
+  description: string;
+  imageUrl: string;
   location?: string;
-  comments: Comment[] | null = null;
+  createdDate: Date;
+  likes: number;
+  dislikes: number;
+  tags: string[];
+  comments: Comment[];
 }

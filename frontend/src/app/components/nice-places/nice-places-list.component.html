@@ -4,11 +4,11 @@
   <div class="card-content">
     <div class="search-content">
 
-      <mat-form-field>
+<mat-form-field floatLabel="always" appearance="outline" class="white-backgrounded-field">
         <input matInput placeholder="Search" />
       </mat-form-field>
 
-      <mat-form-field>
+<mat-form-field floatLabel="always" appearance="outline" class="white-backgrounded-field">
         <mat-label>Favorite food</mat-label>
         <mat-select formControlName="food" multiple>
             <mat-option value="tous" (click)="selectAll('food', ['italian', 'asian'])">Tous</mat-option>
@@ -17,7 +17,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
+<mat-form-field floatLabel="always" appearance="outline" class="white-backgrounded-field">
         <mat-label>Drinks</mat-label>
       <mat-select formControlName="drinks" multiple>
             <mat-option value="tous" (click)="selectAll('drinks', ['alcoolDrinks', 'nonAlccolDrinks'])">Tous</mat-option>
@@ -26,7 +26,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
+<mat-form-field floatLabel="always" appearance="outline" class="white-backgrounded-field">
         <mat-label>Ambience</mat-label>
         <mat-select formControlName="ambience" multiple>
             <mat-option value="tous" (click)="selectAll('ambience', ['view', 'calm', 'cozy', 'romantic'])">Tous</mat-option>

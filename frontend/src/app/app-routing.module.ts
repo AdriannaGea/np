@@ -33,7 +33,7 @@ const routes: Routes = [
     title: 'NP | Add ',
     path: 'auth/add',
     component: NewNicePlaceComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   { title: 'NP | Log', path: 'auth/login', component: LogInComponent },
   { title: 'NP | Join ', path: 'join-us', component: JoinUsComponent },

@@ -1,32 +1,6 @@
-// // // Import Angular Material
-// @use '@angular/material' as mat;
+// Import Angular Material
 
-// // // Include the common styles for Angular Material
-// @include mat.core();
-
-// // // Define the palettes for your theme using the Material Design palettes
-// $frontend-primary: mat.define-palette(mat.$indigo-palette);
-// $frontend-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-// $frontend-warn: mat.define-palette(mat.$red-palette);
-
-// // // Create the theme object
-// $frontend-theme: mat.define-light-theme((
-//   color: (
-//     primary: $frontend-primary,
-//     accent: $frontend-accent,
-//     warn: $frontend-warn,
-//   )
-// ));
-
-// // // Include theme styles for core and each component used in your app
-// @include mat.all-component-themes($frontend-theme);
-
-// // // Global styles
-// * {
-//   font-family: Roboto, Helvetica, sans-serif;
-// }
-
-// // // Define the beige color palette
+// Define the beige color palette
 // $mat-beige: (
 //   50: rgb(255, 250, 244),
 //   100: rgb(255, 240, 230),
@@ -85,14 +59,10 @@
 // Include the common styles for Angular Material
 @include mat.core();
 
-html,
-body {
-  height: 100%;
-}
 
 // Define the palettes for your theme using the Material Design palettes
 $frontend-primary: mat.define-palette(mat.$amber-palette);
-$frontend-accent: mat.define-palette(mat.$green-palette, A200, A100, A400);
+$frontend-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 $frontend-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object
@@ -125,7 +95,6 @@ body {
   background-color: rgba(242, 223, 178, 0.505);
 }
 
-
 .form-card {
   width: 50%;
   margin: 50px auto;
@@ -151,15 +120,6 @@ mat-card-title {
 
 }
 
-mat-form-field {
-  width: 45%;
-  &.full-width {
-    width: 80%;
-    margin-left: 10%;
-  }
-
-}
-
 button {
   font-size: 16px;
   padding: 10px 20px;
@@ -174,3 +134,18 @@ button:hover {
   color: #fc8236;
   background-color: #fed4b7;
 }
+
+mat-form-field {
+  width: 45%;
+  &.full-width {
+    width: 80%;
+    margin-left: 10%;
+  }
+
+}
+
+// Background mat-field
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: white  !important;
+}
+

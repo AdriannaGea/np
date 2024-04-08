@@ -23,13 +23,13 @@ export class JoinUsComponent implements OnInit {
   emailCtrl!: FormControl; // Contrôle de l'email
   confirmEmailCtrl!: FormControl; // Contrôle de la confirmation de l'email
   emailForm!: FormGroup; // Formulaire pour l'email
-  phoneCtrl!: FormControl; // Contrôle du numéro de téléphone
+  // phoneCtrl!: FormControl; // Contrôle du numéro de téléphone
   passwordCtrl!: FormControl; // Contrôle du mot de passe
   confirmPasswordCtrl!: FormControl; // Contrôle de la confirmation du mot de passe
   loginInfoForm!: FormGroup; // Formulaire des informations de connexion
 
   showEmailCtrl$!: Observable<boolean>; // Observable pour afficher le contrôle de l'email
-  showPhoneCtrl$!: Observable<boolean>; // Observable pour afficher le contrôle du téléphone
+  // showPhoneCtrl$!: Observable<boolean>; // Observable pour afficher le contrôle du téléphone
   showEmailError$!: Observable<boolean>; // Observable pour afficher l'erreur de l'email
   showPasswordError$!: Observable<boolean>; // Observable pour afficher l'erreur du mot de passe
 
@@ -50,7 +50,7 @@ export class JoinUsComponent implements OnInit {
       personalInfo: this.personalInfoForm,
       contactPreference: this.contactPreferenceCtrl,
       email: this.emailForm,
-      phone: this.phoneCtrl,
+      // phone: this.phoneCtrl,
       loginInfo: this.loginInfoForm,
     });
   }
@@ -74,7 +74,7 @@ export class JoinUsComponent implements OnInit {
         update: 'blur',
       }
     );
-    this.phoneCtrl = this.formBuilder.control(''); // Contrôle du numéro de téléphone vide
+    // this.phoneCtrl = this.formBuilder.control(''); // Contrôle du numéro de téléphone vide
     this.passwordCtrl = this.formBuilder.control('', Validators.required); // Mot de passe requis
     this.confirmPasswordCtrl = this.formBuilder.control(
       '',
@@ -100,11 +100,11 @@ export class JoinUsComponent implements OnInit {
       map((preference) => preference === 'email'),
       tap((showEmailCtrl) => this.setEmailValidators(showEmailCtrl))
     );
-    this.showPhoneCtrl$ = this.contactPreferenceCtrl.valueChanges.pipe(
-      startWith(this.contactPreferenceCtrl.value),
-      map((preference) => preference === 'phone'),
-      tap((showPhoneCtrl) => this.setPhoneValidators(showPhoneCtrl))
-    );
+    // this.showPhoneCtrl$ = this.contactPreferenceCtrl.valueChanges.pipe(
+    //   startWith(this.contactPreferenceCtrl.value),
+    //   map((preference) => preference === 'phone'),
+    //   tap((showPhoneCtrl) => this.setPhoneValidators(showPhoneCtrl))
+    // );
     this.showEmailError$ = this.emailForm.statusChanges.pipe(
       map(
         (status) =>
@@ -140,19 +140,19 @@ export class JoinUsComponent implements OnInit {
     this.confirmEmailCtrl.updateValueAndValidity();
   }
 
-  private setPhoneValidators(showPhoneCtrl: boolean) {
-    // Définition des validateurs pour le numéro de téléphone
-    if (showPhoneCtrl) {
-      this.phoneCtrl.addValidators([
-        Validators.required,
-        Validators.minLength(10),
-        Validators.maxLength(10),
-      ]); // Numéro de téléphone requis et avec une longueur spécifique
-    } else {
-      this.phoneCtrl.clearValidators(); // Effacer les validateurs du numéro de téléphone
-    }
-    this.phoneCtrl.updateValueAndValidity();
-  }
+  // private setPhoneValidators(showPhoneCtrl: boolean) {
+  //   // Définition des validateurs pour le numéro de téléphone
+  //   if (showPhoneCtrl) {
+  //     this.phoneCtrl.addValidators([
+  //       Validators.required,
+  //       Validators.minLength(10),
+  //       Validators.maxLength(10),
+  //     ]); // Numéro de téléphone requis et avec une longueur spécifique
+  //   } else {
+  //     this.phoneCtrl.clearValidators(); // Effacer les validateurs du numéro de téléphone
+  //   }
+  //   this.phoneCtrl.updateValueAndValidity();
+  // }
 
   onSubmitForm() {
     // Soumission du formulaire
@@ -184,10 +184,10 @@ export class JoinUsComponent implements OnInit {
       return 'Ce champ est requis'; // Message d'erreur pour un champ requis
     } else if (ctrl.hasError('email')) {
       return "Merci d'entrer une adresse mail valide"; // Message d'erreur pour une adresse email non valide
-    } else if (ctrl.hasError('minlength')) {
-      return 'Ce numéro de téléphone ne contient pas assez de chiffres'; // Message d'erreur pour un numéro de téléphone trop court
-    } else if (ctrl.hasError('maxlength')) {
-      return 'Ce numéro de téléphone contient trop de chiffres'; // Message d'erreur pour un numéro de téléphone trop long
+    // } else if (ctrl.hasError('minlength')) {
+    //   return 'Ce numéro de téléphone ne contient pas assez de chiffres'; // Message d'erreur pour un numéro de téléphone trop court
+    // } else if (ctrl.hasError('maxlength')) {
+    //   return 'Ce numéro de téléphone contient trop de chiffres'; // Message d'erreur pour un numéro de téléphone trop long
     } else {
       return 'Ce champ contient une erreur'; // Message d'erreur générique
     }
