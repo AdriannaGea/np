@@ -5,6 +5,17 @@ const mysql = require("mysql");
 const cors = require("cors");
 const config = require("./config");
 const { success, error } = require("./functions");
+const bcrypt = require("bcrypt");
+const {sign,verify} = require("jsonwebtoken");
+
+const createToken = (user) => {
+const dataStoredToken = { id: user.id};
+const expiresIn = 60 * 60;
+return {
+  expiresIn,
+  token: sign(dataStoredToken, config.jwtKey, { expiresIn }),
+};
+}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -249,61 +260,61 @@ db.connect((err) => {
         }
       })
       .post((req, res) => {
-        // Vérification si le membre existe déjà
-        db.query("SELECT * FROM members", (err, result) => {
-          if (err) {
-            res.json(err.message);
-          } else {
-            let alredyExist = result.some(
-              (member) => member.email == req.body.email
-            );
-
-            if (alredyExist == true) {
+        db.query(
+          "SELECT * FROM members WHERE email = ?",
+          [req.body.email],
+          (err, result) => {
+            if (err) {
+              res.json(err.message);
+            } else if (result.length > 0) {
               res.json(error("déjà existant"));
             } else {
-              // Requête SQL pour insérer un nouveau membre
-              db.query(
-                "INSERT INTO members(firstName, lastName, email, phone, userName, password) VALUES (?, ?, ?, ?, ?, ?)",
-                [
-                  req.body.firstName,
-                  req.body.lastName,
-                  req.body.email,
-                  req.body.phone,
-                  req.body.userName,
-                  req.body.password,
-                ],
-                (err, result) => {
-                  if (err) {
-                    res.json(err.message);
-                  } else {
-                    // Sélection du membre nouvellement inséré pour le renvoyer en réponse
-                    db.query(
-                      "SELECT * FROM members WHERE email = ?",
-                      [req.body.email],
-                      (err, result) => {
-                        if (err) {
-                          res.json(err.message);
-                        } else {
-                          res.json(
-                            success({
-                              id: result[0].id,
-                              firstName: result[0].firstName,
-                              lastName: result[0].lastName,
-                              email: result[0].email,
-                              phone: result[0].phone,
-                              userName: result[0].username,
-                              password: result[0].password,
-                            })
-                          );
-                        }
+              bcrypt.hash(req.body.password, 10, (err, hash) => {
+                if (err) {
+                  res.json(err.message);
+                } else {
+                  db.query(
+                    "INSERT INTO members(firstName, lastName, email, userName, password) VALUES (?, ?, ?, ?, ?)",
+                    [
+                      req.body.firstName,
+                      req.body.lastName,
+                      req.body.email,
+                      req.body.userName,
+                      hash,
+                    ],
+                    (err, result) => {
+                      if (err) {
+                        res.json(err.message);
+                      } else {
+                        db.query(
+                          "SELECT * FROM members WHERE email = ?",
+                          [req.body.email],
+                          (err, result) => {
+                            if (err) {
+                              res.json(err.message);
+                            } else {
+                              res.json(
+                                success({
+                                  id: result[0].id,
+                                  firstName: result[0].firstName,
+                                  lastName: result[0].lastName,
+                                  email: result[0].email,
+                                  phone: result[0].phone,
+                                  userName: result[0].userName,
+                                  password: result[0].password,
+                                })
+                              );
+                            }
+                          }
+                        );
                       }
-                    );
-                  }
+                    }
+                  );
                 }
-              );
+              });
             }
           }
-        });
+        );
       });
 
     // Endpoint pour un membre spécifique (par ID) (ajouté ici)
@@ -385,41 +396,62 @@ db.connect((err) => {
         );
       });
 
-    // Utilisation du routeur pour l'endpoint "members"
-    app.use(config.rootAPI + "members", MembersRouter);
+    const LoginRouter = express.Router();
 
     // Endpoint pour la connexion d'un utilisateur
-    app.post("/login", (req, res) => {
-      const { email, password } = req.body;
-      db.query(
-        "SELECT * FROM members WHERE email = ?",
-        [email],
-        async (err, result) => {
-          if (err) {
-            res.json(error(err.message));
-          } else {
-            if (result.length > 0) {
-              // Vérification du mot de passe hashé
-              const isPasswordValid = await bcrypt.compare(
-                password,
-                result[0].password
-              );
+   LoginRouter.route("/").post((req, res) => {
+     const { email, password } = req.body;
 
-              if (isPasswordValid) {
-                // Si le mot de passe est valide, renvoyer un token (à générer)
-                res.json(success({ token: "YourGeneratedTokenHere" }));
-              } else {
-                // Si le mot de passe est invalide, renvoyer une erreur
-                res.json(error("Invalid credentials"));
-              }
-            } else {
-              // Si l'email n'est pas trouvé, renvoyer une erreur
-              res.json(error("Invalid credentials"));
-            }
-          }
-        }
-      );
-    });
+     // Validation de la clé JWT
+     if (!config.jwtKey || config.jwtKey.trim() === "") {
+       console.error("La clé JWT n'est pas définie ou est vide");
+       return res.json(error("Erreur interne du serveur"));
+     }
+
+     db.query(
+       "SELECT * FROM members WHERE email = ?",
+       [email],
+       async (err, result) => {
+         if (err) {
+           // Erreur lors de la requête SQL
+           res.json(error(err.message));
+         } else {
+           if (result.length > 0) {
+             const isPasswordValid = await bcrypt.compare(
+               password,
+               result[0].password
+             );
+
+             if (isPasswordValid) {
+              //  Génération du token JWT en cas de succès
+               const token = createToken(result)
+               res.json(success({ token: token }));
+             } else {
+               // Identifiants invalides
+               res.json(error("Identifiants invalides"));
+             }
+           } else {
+             // Identifiants invalides
+             res.json(error("Identifiants invalides"));
+           }
+         }
+       }
+     );
+   });
+
+
+    // Utilisation du routeur pour l'endpoint "members"
+   app.use(config.rootAPI + "login", LoginRouter);
+   app.use(config.rootAPI + "members", MembersRouter);
+
+
+    function success(data) {
+      return { success: true, data: data };
+    }
+
+    function error(message) {
+      return { success: false, message: message };
+    }
 
     app.listen(config.port, () => {
       console.log("Serveur démarré");
