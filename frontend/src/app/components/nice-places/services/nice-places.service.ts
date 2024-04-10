@@ -35,8 +35,8 @@ export class NicePlacesService {
   // Récupérer un Nice Place spécifique par son ID
   getNicePlaceById(
     id: number
-  ): Observable<{ status: string; result: NicePlace }> {
-    return this.http.get<{ status: string; result: NicePlace }>(
+  ): Observable<{ status: string; data: NicePlace }> {
+    return this.http.get<{ status: string; data: NicePlace }>(
       `${this.apiUrl}/niceplaces/${id}`
     );
   }
@@ -52,14 +52,14 @@ export class NicePlacesService {
 
         if (likeType === 'like' || likeType === 'unlike') {
           updatedNicePlace = {
-            ...response.result,
-            likes: response.result.likes + (likeType === 'like' ? 1 : -1),
+            ...response.data,
+            likes: response.data.likes + (likeType === 'like' ? 1 : -1),
           };
         } else if (likeType === 'dislike' || likeType === 'undislike') {
           updatedNicePlace = {
-            ...response.result,
+            ...response.data,
             dislikes:
-              response.result.dislikes + (likeType === 'dislike' ? 1 : -1),
+              response.data.dislikes + (likeType === 'dislike' ? 1 : -1),
           };
         } else {
           throw new Error('Type de like invalide');
