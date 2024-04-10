@@ -33,6 +33,9 @@ export class LogInComponent {
     // Appel du service d'authentification pour la connexion
     this.authService.login(email, password).subscribe(
       (data) => {
+        if (!data.success) {
+          return console.log('Vous ne pouvez pas vous connecter');
+        }
         // Si la connexion réussit, rediriger l'utilisateur vers la page '/nice-places'
         this.router.navigate(['/nice-places']);
       },

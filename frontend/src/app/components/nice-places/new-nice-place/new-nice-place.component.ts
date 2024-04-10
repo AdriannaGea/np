@@ -42,6 +42,7 @@ export class NewNicePlaceComponent {
         ...formValue,
         createdDate: new Date(),
         likes: 0,
+        dislikes: 0,
         id: 0,
       }))
     );

@@ -31,7 +31,7 @@ export class OneNicePlaceComponent {
     // Récupération du lieu par ID depuis le service
     this.nicePlace$ = this.nps
       .getNicePlaceById(nicePlaceId)
-      .pipe(map((response) => response.result));
+      .pipe(map((response:any) => response['data']));
   }
 
   onLike(nicePlaceId: number, likeType: 'like' | 'dislike') {
