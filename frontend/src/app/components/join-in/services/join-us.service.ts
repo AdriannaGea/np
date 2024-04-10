@@ -15,10 +15,10 @@ export class JoinUsService {
       firstName: formValue.personalInfo.firstName,
       lastName: formValue.personalInfo.lastName,
       email: formValue.email?.email,
-      phone: formValue.phone,
       userName: formValue.loginInfo.username,
       password: formValue.loginInfo.password,
     };
+
     return this.http.post<boolean>(`${environment.apiUrl}/api/members`, preparSave).pipe(
       mapTo(true),
       delay(1000),
