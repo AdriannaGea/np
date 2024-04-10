@@ -21,7 +21,8 @@ export class NicePlacesComponent {
   loadNicePlaces() {
     this.nps.getAllNicePlaces().subscribe(
       (places: any) => {
-        this.nicePlaces = places['result'];
+        // console.log(places);
+        this.nicePlaces = places['data'];
       },
       (error) => {
         console.error('Error loading nice places: ', error);

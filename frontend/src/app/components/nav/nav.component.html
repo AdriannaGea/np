@@ -1,14 +1,23 @@
 <mat-toolbar>
   <span>Nice Places</span>
   <ul>
-    <!-- <li><a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a></li> -->
     <li><a routerLink="" routerLinkActive="active">Home</a></li>
     <li><a routerLink="nice-places" routerLinkActive="active">Nice Places</a></li>
   </ul>
   <div class="spacer"></div>
   <ul>
-    <li>What's yours nice place&nbsp; <button (click)="onAddNewNicePlace()">+</button></li>
-    <li><a routerLink="auth/login">Log-in</a></li>
-    <li><a routerLink="/join-us">Join us</a></li>
+    <li>Quel est votre lieu sympa ? <button (click)="onAddNewNicePlace()">+</button></li>
+    <li>
+      <ng-container *ngIf="isLoggedIn; else loginTemplate">
+        <!-- Bouton de déconnexion -->
+        <a mat-button (click)="onLogout()">Déconnexion</a>
+      </ng-container>
+      <ng-template #loginTemplate>
+        <!-- Bouton de connexion -->
+        <a mat-button routerLink="auth/login">Connexion</a>
+      </ng-template>
+    </li>
+    <!-- Warunkowe wyświetlenie przycisku "Rejoignez-nous" -->
+    <li *ngIf="!isLoggedIn"><a mat-button routerLink="/join-us">Rejoignez-nous</a></li>
   </ul>
 </mat-toolbar>

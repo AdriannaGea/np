@@ -14,17 +14,16 @@ export class AuthGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
 
   // Méthode pour vérifier si l'utilisateur est authentifié
+  // auth.guard.ts
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    // Récupérer le token de l'utilisateur
     const token = this.auth.getToken();
+    console.log('Token:', token);
     if (token) {
-      // Si un token est présent, autoriser l'accès
       return true;
     } else {
-      // Si aucun token n'est présent, rediriger vers la page de connexion et refuser l'accès
       this.router.navigateByUrl('/auth/login');
       return false;
     }

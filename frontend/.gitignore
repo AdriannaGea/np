@@ -10,6 +10,7 @@
 /node_modules
 npm-debug.log
 yarn-error.log
+backend/api/node_modules/bcrypt/lib/binding/napi-v3/bcrypt_lib.node
 
 # IDEs and editors
 .idea/
