@@ -3,6 +3,8 @@ import { NicePlacesService } from '../services/nice-places.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map, of, tap } from 'rxjs';
 import { NicePlace } from '../models/nice-place.model';
+import { ToastrService } from 'ngx-toastr';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-one-nice-place',
@@ -13,25 +15,37 @@ export class OneNicePlaceComponent {
   nicePlace$!: Observable<NicePlace>;
   buttonText!: string;
   dislikeButtonText!: string;
+  currentUser: any;
+  nicePlaces: NicePlace[] = [];
+  editMode = false;
+
   @Output() postCommented = new EventEmitter<{
     comment: string;
     nicePlaceId: number;
   }>();
 
-  constructor(private nps: NicePlacesService, private route: ActivatedRoute) {}
+  @Output() editNicePlace = new EventEmitter<NicePlace>();
+
+  constructor(
+    private nps: NicePlacesService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit() {
     // Initialisation du texte des boutons
     this.buttonText = 'Like It!';
     this.dislikeButtonText = 'Dislike It!';
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}'); // Obtenir l'utilisateur actuel depuis le localStorage
 
-    // Récupération de l'ID du lieu depuis l'URL
+    // Récupération de l'ID de Nice Place depuis l'URL
     const nicePlaceId = +this.route.snapshot.params['id'];
 
-    // Récupération du lieu par ID depuis le service
+    // Récupération de Nice Place par ID depuis le service
     this.nicePlace$ = this.nps
       .getNicePlaceById(nicePlaceId)
-      .pipe(map((response:any) => response['data']));
+      .pipe(map((response: any) => response['data']));
   }
 
   onLike(nicePlaceId: number, likeType: 'like' | 'dislike') {
@@ -39,7 +53,7 @@ export class OneNicePlaceComponent {
 
     // Si le type est 'like'
     if (likeType === 'like') {
-      // Mise à jour du lieu avec le type de like approprié
+      // Mise à jour de Nice Place avec le type de like approprié
       updateAction = this.nps
         .likeNicePlaceById(
           nicePlaceId,
@@ -55,7 +69,7 @@ export class OneNicePlaceComponent {
     }
     // Si le type est 'dislike'
     else if (likeType === 'dislike') {
-      // Mise à jour du lieu avec le type de dislike approprié
+      // Mise à jour de Nice Place avec le type de dislike approprié
       updateAction = this.nps
         .likeNicePlaceById(
           nicePlaceId,
@@ -81,8 +95,67 @@ export class OneNicePlaceComponent {
     }
   }
 
+  updatePlace(nicePlace: NicePlace) {
+    const updatedData = {
+      title: nicePlace.title,
+      description: nicePlace.description,
+      imageUrl: nicePlace.imageUrl,
+      location: nicePlace.location,
+      member_id: this.currentUser.id,
+      likes: nicePlace.likes,
+      dislikes: nicePlace.dislikes,
+      editDate: new Date(),
+    };
+
+    this.nps.updateNicePlace(nicePlace.id, updatedData).subscribe(
+      (updatedPlace) => {
+        const index = this.nicePlaces.findIndex(
+          (p) => p.id === updatedPlace.id
+        );
+        if (index !== -1) {
+          this.nicePlaces[index] = updatedPlace;
+        }
+        this.snackBar.open(
+          'Ton Nice Place a été modifié avec succès!',
+          'Fermer',
+          {
+            duration: 3000,
+          }
+        );
+        this.nicePlace$ = of(updatedPlace); // Actualisation de nicePlace$
+      },
+      (error) => {
+        this.snackBar.open(
+          'Une erreur est survenue lors de la modification de ton Nice Place!',
+          'Fermer',
+          {
+            duration: 3000,
+          }
+        );
+      }
+    );
+  }
+
+  deletePlace(nicePlace: NicePlace) {
+    this.nps.deleteNicePlace(nicePlace.id).subscribe(() => {
+      this.snackBar.open(
+        'Ton Nice Place a été supprimé avec succès!',
+        'Fermer',
+        {
+          duration: 3000,
+        }
+      );
+      // Redirection vers la page /nice-places
+      this.router.navigate(['/nice-places']);
+    });
+  }
+
+  editClicked(nicePlace: NicePlace) {
+    this.editMode = true;
+    this.editNicePlace.emit(nicePlace);
+  }
+
   // onNewComment(comment: string) {
   //   const nicePlaceId = +this.route.snapshot.params['id'];
-  //   this.postCommented.emit({ comment, nicePlaceId });
-  // }
+  //   this.postCommented.emit({ comment, nicePlace
 }

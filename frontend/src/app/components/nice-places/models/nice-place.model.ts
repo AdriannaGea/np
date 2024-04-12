@@ -5,8 +5,10 @@ export interface NicePlace {
   imageUrl: string;
   location?: string;
   createdDate: Date;
+  editDate: Date; 
   likes: number;
   dislikes: number;
   tags: string[];
   comments: Comment[];
+  member_id: number;
 }
