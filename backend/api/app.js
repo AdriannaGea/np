@@ -56,22 +56,25 @@ db.connect((err) => {
       })
       .post((req, res) => {
         // Extraction des données du corps de la requête
-        const { title, description, imageUrl, location, tags } = req.body;
+        const { title, description, imageUrl, location, tags , member_id} = req.body;
         // Requête SQL pour insérer un nouveau lieu dans la base de données
         const createdDate = new Date();
+        const editDate = new Date();
         const likes = 0;
         const dislikes = 0;
         db.query(
-          "INSERT INTO niceplaces (title, description, imageUrl, createdDate, location, likes, dislikes, tags) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+          "INSERT INTO niceplaces (title, description, imageUrl, createdDate, editDate, location, likes, dislikes, tags,member_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
           [
             title,
             description,
             imageUrl,
             createdDate,
+            editDate,
             location,
             likes,
             dislikes,
             tags,
+            member_id
           ],
           (err, result) => {
             if (err) {
@@ -121,6 +124,7 @@ db.connect((err) => {
           description,
           imageUrl,
           createdDate,
+          editDate,
           location,
           likes,
           dislikes,
@@ -128,12 +132,13 @@ db.connect((err) => {
         } = req.body;
         // Requête SQL pour mettre à jour un lieu spécifique par son ID
         db.query(
-          "UPDATE niceplaces SET title = ?, description = ?, imageUrl = ?, createdDate = ?, location = ?, likes = ?, dislikes = ?, tags = ? WHERE id = ?",
+          "UPDATE niceplaces SET title = ?, description = ?, imageUrl = ?, createdDate = ?, editDate = ?, location = ?, likes = ?, dislikes = ?, tags = ? WHERE id = ?",
           [
             title,
             description,
             imageUrl,
             createdDate,
+            editDate,
             location,
             likes,
             dislikes,
@@ -176,16 +181,26 @@ db.connect((err) => {
       });
     // Route pour "liker" un lieu
     NicePlacesRouter.route("/:id/like").put((req, res) => {
+      updateAction(req.params.id, "like", res);
+    });
+
+    NicePlacesRouter.route("/:id/dislike").put((req, res) => {
+      updateAction(req.params.id, "dislike", res);
+    });
+
+    function updateAction(niceplaceId, actionType, res) {
+      const columnToUpdate = actionType === "like" ? "likes" : "dislikes";
+
       db.query(
-        "UPDATE niceplaces SET likes = likes + 1 WHERE id = ?",
-        [req.params.id],
+        `UPDATE niceplaces SET ${columnToUpdate} = ${columnToUpdate} + 1 WHERE id = ?`,
+        [niceplaceId],
         (err, result) => {
           if (err) {
             res.json(error(err.message));
           } else {
             db.query(
               "SELECT * FROM niceplaces WHERE id = ?",
-              [req.params.id],
+              [niceplaceId],
               (err, result) => {
                 if (err) {
                   res.json(error(err.message));
@@ -197,7 +212,7 @@ db.connect((err) => {
           }
         }
       );
-    });
+    }
 
     // Route pour "disliker" un lieu
     NicePlacesRouter.route("/:id/dislike").put((req, res) => {
@@ -425,7 +440,7 @@ db.connect((err) => {
              if (isPasswordValid) {
               //  Génération du token JWT en cas de succès
                const token = createToken(result)
-               res.json(success({ token: token }));
+               res.json(success({ token: token,user: result }));
              } else {
                // Identifiants invalides
                res.json(error("Identifiants invalides"));
