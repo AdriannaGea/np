@@ -8,11 +8,12 @@ import { environment } from 'src/app/environments/environment';
   providedIn: 'root',
 })
 export class NicePlacesService {
+  // Méthode non implémentée pour ajouter un tag à un Nice Place
   addTagToNicePlace(placeId: any, tagName: string) {
     throw new Error('Méthode non implémentée.');
   }
 
-  // URL de l'API défini dans le fichier de configuration de l'environnement
+  // URL de l'API récupérée depuis la configuration de l'environnement
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
@@ -23,16 +24,22 @@ export class NicePlacesService {
   }
 
   // Ajouter un nouveau Nice Place via un formulaire
-  addNewPlace(formValue: {
-    title: string;
-    description: string;
-    imageUrl: string;
-    location?: string;
-  }): Observable<NicePlace> {
+  addNewPlace(form: any, member: any): Observable<NicePlace> {
+    // Création de l'objet formValue à partir des données du formulaire et de l'utilisateur
+    const formValue = {
+      title: form.title,
+      description: form.description,
+      imageUrl: form.imageUrl,
+      location: form.location,
+      tags: form.tags,
+      member_id: member.id,
+    };
+
+    // Appel à l'API pour ajouter un nouveau Nice Place
     return this.http.post<NicePlace>(`${this.apiUrl}/niceplaces`, formValue);
   }
 
-  // Récupérer un Nice Place spécifique par son ID
+  // Récupération un Nice Place spécifique par son ID
   getNicePlaceById(
     id: number
   ): Observable<{ status: string; data: NicePlace }> {
@@ -41,7 +48,7 @@ export class NicePlacesService {
     );
   }
 
-  // Mettre à jour le nombre de likes ou de dislikes d'un Nice Place par son ID
+  // Mise à jour le nombre de likes ou de dislikes d'un Nice Place par son ID
   likeNicePlaceById(
     id: number,
     likeType: 'like' | 'unlike' | 'dislike' | 'undislike'
@@ -50,6 +57,7 @@ export class NicePlacesService {
       switchMap((response) => {
         let updatedNicePlace: NicePlace;
 
+        // Mise à jour du Nice Place en fonction du type de like
         if (likeType === 'like' || likeType === 'unlike') {
           updatedNicePlace = {
             ...response.data,
@@ -65,11 +73,34 @@ export class NicePlacesService {
           throw new Error('Type de like invalide');
         }
 
-        // Mettre à jour le Nice Place sur le serveur
+        // Mise à jour du Nice Place sur le serveur
         return this.http
           .put<NicePlace>(`${this.apiUrl}/niceplaces/${id}`, updatedNicePlace)
           .pipe(map((updated) => updatedNicePlace));
       })
     );
+  }
+
+  // Actualisation de Nice Place
+  updateNicePlace(
+    id: number,
+    updatedData: Partial<NicePlace>
+  ): Observable<NicePlace> {
+    updatedData.editDate = new Date();
+
+    return this.http.put<NicePlace>(
+      `${this.apiUrl}/niceplaces/${id}`,
+      updatedData
+    );
+  }
+
+  // Suppresion de Nice PlACE
+  deleteNicePlace(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/niceplaces/${id}`);
+  }
+
+  // Verification qui est le poprieter de ce Nice Place
+  isOwnerOfNicePlace(nicePlace: NicePlace, userId: number): boolean {
+    return nicePlace.member_id === userId;
   }
 }

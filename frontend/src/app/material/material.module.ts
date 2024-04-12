@@ -11,6 +11,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [],
@@ -30,6 +31,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatFormFieldModule,
     MatListModule,
     MatSelectModule,
+    MatSnackBarModule,
   ],
 })
 export class MaterialsModule {}

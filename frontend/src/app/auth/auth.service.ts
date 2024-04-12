@@ -2,15 +2,19 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, tap } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
+import { LocalStoreService } from '../components/join-in/services/other/local-store.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private token!: string;
+private currentUser:any;
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+  private local: LocalStoreService
+) {}
 
   // Fonction pour se connecter à l'API avec un email et un mot de passe
   login(email: string, password: string): Observable<any> {
@@ -20,8 +24,10 @@ export class AuthService {
         tap((response) => {
           if (response.data && response.data.token) {
             this.token = response.data.token;
+            this.currentUser = response.data.user[0]
+            this.local.setItem('currentUser', this.currentUser);
             localStorage.setItem('token', this.token);
-// console.log(this.token);
+            console.log(this.currentUser);
             this.isLoggedInSubject.next(true); // mise à jour du statut de connexion
           }
         }),
@@ -36,6 +42,7 @@ export class AuthService {
   logout(): void {
     this.token = '';
     localStorage.removeItem('token');
+    this.local.removeItem('currentUser');
     this.isLoggedInSubject.next(false); // mise à jour du statut de connexion
   }
 

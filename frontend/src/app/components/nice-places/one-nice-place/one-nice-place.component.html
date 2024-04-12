@@ -7,6 +7,10 @@
       Mis en ligne
       {{ nicePlace.createdDate | date : "à HH:mm, le d MMMM yyyy" }}
     </mat-card-subtitle>
+    <!-- <mat-card-subtitle>
+      Modifié le
+      {{ nicePlace.editDate | date : "à HH:mm, le d MMMM yyyy" }}
+    </mat-card-subtitle> -->
   </mat-card-header>
   <img mat-card-image [src]="nicePlace.imageUrl" [alt]="nicePlace.title" />
   <mat-card-content>
@@ -20,5 +24,16 @@
       <button (click)="onLike(nicePlace.id, 'dislike')">{{ dislikeButtonText }}</button>
       <span>{{ nicePlace.dislikes }}</span>
     </div>
+    <!-- Les buttons afficher que l'user est connecter -->
+    <div *ngIf="currentUser && nicePlace.member_id === currentUser.id">
+<button mat-button (click)="editMode = !editMode; editClicked(nicePlace)">Edit</button>
+
+      <button mat-button color="warn" (click)="deletePlace(nicePlace)">Delete</button>
+    </div>
   </mat-card-content>
 </mat-card>
+
+<app-new-nice-place
+  *ngIf="editMode"
+  [editNicePlaceData]="nicePlace$ | async"
+></app-new-nice-place>
