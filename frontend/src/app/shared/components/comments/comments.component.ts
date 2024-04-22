@@ -3,7 +3,6 @@ import {
   animateChild,
   group,
   query,
-  sequence,
   stagger,
   state,
   style,
@@ -11,11 +10,20 @@ import {
   trigger,
   useAnimation,
 } from '@angular/animations';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Inject,
+} from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-// import { Comment } from 'src/app/core/models/comments.model';
-import { flashAnimation } from '../../animations/flash.animation';
-import { slideAndFadeAnimation } from '../../animations/slide-and-fade.animation';
+import { flashAnimation } from 'src/app/shared/animations/flash.animation';
+import { slideAndFadeAnimation } from 'src/app/shared/animations/slide-and-fade.animation';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NicePlacesService } from 'src/app/components/services/nice-places.service';
+import { Comment } from '../../../models/comments.model';
 
 @Component({
   selector: 'app-comments',
@@ -102,34 +110,58 @@ import { slideAndFadeAnimation } from '../../animations/slide-and-fade.animation
   ],
 })
 export class CommentsComponent implements OnInit {
-  @Input() comments!: Comment[];
+  @Input() postId!: number;
+  comments: Comment[] = [];
   @Output() newComment = new EventEmitter<string>();
 
   commentCtrl!: FormControl;
   animationStates: { [key: number]: 'default' | 'active' } = {};
-  constructor(private formBuilder: FormBuilder) {}
+
+  constructor(
+    private formBuilder: FormBuilder,
+    @Inject(NicePlacesService) private nps: NicePlacesService
+  ) {}
 
   ngOnInit(): void {
     this.commentCtrl = this.formBuilder.control('', [
       Validators.required,
       Validators.minLength(10),
     ]);
-    for (let index in this.comments) {
-      this.animationStates[index] = 'default';
+    this.loadComments();
+  }
+
+  loadComments(): void {
+    if (!this.postId) {
+      return;
     }
+    this.nps.getCommentsByPostId(this.postId).subscribe(
+      (data: any) => {
+        this.comments = data.map((comment: any) => ({
+          ...comment,
+          createdDate: comment.createdDate, // Używamy wartości string bez konwersji
+        }));
+        for (let index in this.comments) {
+          this.animationStates[index] = 'default';
+        }
+      },
+      (error: HttpErrorResponse) => {
+        console.error('Error fetching comments:', error);
+      }
+    );
   }
 
   onLeaveComment() {
     if (this.commentCtrl.invalid) {
       return;
     }
-    // const maxId = Math.max(...this.comments.map((comment) => comment.id));
-    // this.comments.unshift({
-    //   // id: maxId + 1,
-    //   // comment: this.commentCtrl.value,
-    //   // createdDate: new Date().toISOString(),
-    //   // userId: 1,
-    // });
+    const maxId = Math.max(...this.comments.map((comment) => comment.id));
+    this.comments.unshift({
+      id: maxId + 1,
+      comment: this.commentCtrl.value,
+      userId: 1,
+      member_id: 1, // Upewnij się, że masz dostęp do member_id, jeśli jest potrzebne
+      postId: this.postId,
+    });
     this.newComment.emit(this.commentCtrl.value);
     this.commentCtrl.reset();
   }

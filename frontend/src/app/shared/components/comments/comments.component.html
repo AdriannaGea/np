@@ -1,11 +1,10 @@
 <div class="comments-row">
   <mat-form-field>
-    <input
-      type="text"
+    <textarea
       matInput
       placeholder="Laissez un commentaire…*"
       [formControl]="commentCtrl"
-    />
+    ></textarea>
   </mat-form-field>
   <button mat-icon-button color="primary" (click)="onLeaveComment()">
     <mat-icon>send</mat-icon>
@@ -20,9 +19,8 @@
     (mouseenter)="onListItemMouseEnter(i)"
     (mouseleave)="onListItemMouseLeave(i)"
   >
-    <!-- <span class="comment-text" mat-line>{{ comment.comment }}</span>
-    <span class="comment-date" mat-line>{{
-      comment.createdDate | timeAgo -->
-    <!-- }}</span> -->
+    <span class="comment-text" mat-line>{{ comment.comment }}</span>
+    <span class="comment-date" mat-line>
+    </span>
   </mat-list-item>
 </mat-list>

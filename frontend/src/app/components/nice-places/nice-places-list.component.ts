@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NicePlace } from './models/nice-place.model';
-import { NicePlacesService } from './services/nice-places.service';
+import { NicePlace } from '../../models/nice-place.model';
+import { NicePlacesService } from '../services/nice-places.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -44,20 +44,21 @@ export class NicePlacesListComponent implements OnInit {
 
     if (option !== 'tous' && formControl?.value.includes('tous')) {
       // Si une option autre que 'tous' est selecionnée et que 'tous est actuellement sélectionné, sécocher 'tous
-      formControl.setValue(formControl.value.filter((value: string) => value !== 'tous'));
+      formControl.setValue(
+        formControl.value.filter((value: string) => value !== 'tous')
+      );
       this.selectAllFilters;
     }
   }
 
+  // ------------------ Searching --------------- //
 
-// ------------------ Searching --------------- //
+  // getAllValues(searchFormGroup: FormGroup, controlName: string): string[] {
+  //     const formControl = searchFormGroup.get(controlName);
+  //     const values = formControl?.value || [];
 
-// getAllValues(searchFormGroup: FormGroup, controlName: string): string[] {
-//     const formControl = searchFormGroup.get(controlName);
-//     const values = formControl?.value || [];
-
-//     return this.removeAllOptions(values)
-//   }
+  //     return this.removeAllOptions(values)
+  //   }
 
   // removeAllOptions(values: string[]): string[] {
   //   const index = values.indexOf('tous');
@@ -66,5 +67,4 @@ export class NicePlacesListComponent implements OnInit {
   //   }
   //   return values;
   // }
-
 }

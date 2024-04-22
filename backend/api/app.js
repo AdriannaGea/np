@@ -56,7 +56,8 @@ db.connect((err) => {
       })
       .post((req, res) => {
         // Extraction des données du corps de la requête
-        const { title, description, imageUrl, location, tags , member_id} = req.body;
+        const { title, description, imageUrl, location, tags, member_id } =
+          req.body;
         // Requête SQL pour insérer un nouveau lieu dans la base de données
         const createdDate = new Date();
         const editDate = new Date();
@@ -74,7 +75,7 @@ db.connect((err) => {
             likes,
             dislikes,
             tags,
-            member_id
+            member_id,
           ],
           (err, result) => {
             if (err) {
@@ -414,51 +415,96 @@ db.connect((err) => {
     const LoginRouter = express.Router();
 
     // Endpoint pour la connexion d'un utilisateur
-   LoginRouter.route("/").post((req, res) => {
-     const { email, password } = req.body;
+    LoginRouter.route("/").post((req, res) => {
+      const { email, password } = req.body;
 
-     // Validation de la clé JWT
-     if (!config.jwtKey || config.jwtKey.trim() === "") {
-       console.error("La clé JWT n'est pas définie ou est vide");
-       return res.json(error("Erreur interne du serveur"));
-     }
+      // Validation de la clé JWT
+      if (!config.jwtKey || config.jwtKey.trim() === "") {
+        console.error("La clé JWT n'est pas définie ou est vide");
+        return res.json(error("Erreur interne du serveur"));
+      }
+
+      db.query(
+        "SELECT * FROM members WHERE email = ?",
+        [email],
+        async (err, result) => {
+          if (err) {
+            // Erreur lors de la requête SQL
+            res.json(error(err.message));
+          } else {
+            if (result.length > 0) {
+              const isPasswordValid = await bcrypt.compare(
+                password,
+                result[0].password
+              );
+
+              if (isPasswordValid) {
+                //  Génération du token JWT en cas de succès
+                const token = createToken(result);
+                res.json(success({ token: token, user: result }));
+              } else {
+                // Identifiants invalides
+                res.json(error("Identifiants invalides"));
+              }
+            } else {
+              // Identifiants invalides
+              res.json(error("Identifiants invalides"));
+            }
+          }
+        }
+      );
+    });
+
+    // Router dla komentarzy
+    const CommentsRouter = express.Router();
+
+    // Endpoint do dodawania komentarza
+   CommentsRouter.route("/").post((req, res) => {
+     const { userId, comment, member_id, postId } = req.body; // dodaj postId
+
+     const createdDate = new Date();
 
      db.query(
-       "SELECT * FROM members WHERE email = ?",
-       [email],
-       async (err, result) => {
+       "INSERT INTO comments (userId, comment, createdDate, member_id, postId) VALUES (?, ?, ?, ?, ?)", // dodaj postId
+       [userId, comment, createdDate, member_id, postId], // dodaj postId
+       (err, result) => {
          if (err) {
-           // Erreur lors de la requête SQL
            res.json(error(err.message));
          } else {
-           if (result.length > 0) {
-             const isPasswordValid = await bcrypt.compare(
-               password,
-               result[0].password
-             );
-
-             if (isPasswordValid) {
-              //  Génération du token JWT en cas de succès
-               const token = createToken(result)
-               res.json(success({ token: token,user: result }));
-             } else {
-               // Identifiants invalides
-               res.json(error("Identifiants invalides"));
+           db.query(
+             "SELECT * FROM comments WHERE id = ?",
+             [result.insertId],
+             (err, result) => {
+               if (err) {
+                 res.json(error(err.message));
+               } else {
+                 res.json(success(result[0]));
+               }
              }
-           } else {
-             // Identifiants invalides
-             res.json(error("Identifiants invalides"));
-           }
+           );
          }
        }
      );
    });
-
+    // Endpoint do pobierania komentarzy dla konkretnego miejsca
+    CommentsRouter.route("/:id").get((req, res) => {
+      db.query(
+        "SELECT * FROM comments WHERE postId = ?",
+        [req.params.id],
+        (err, result) => {
+          if (err) {
+            res.json(error(err.message));
+          } else {
+            res.json(success(result));
+          }
+        }
+      );
+    });
 
     // Utilisation du routeur pour l'endpoint "members"
-   app.use(config.rootAPI + "login", LoginRouter);
-   app.use(config.rootAPI + "members", MembersRouter);
-
+    app.use(config.rootAPI + "login", LoginRouter);
+    app.use(config.rootAPI + "members", MembersRouter);
+    app.use(config.rootAPI + "comments", CommentsRouter);
 
     function success(data) {
       return { success: true, data: data };

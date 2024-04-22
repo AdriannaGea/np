@@ -1,10 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { NicePlacesService } from '../services/nice-places.service';
+import { NicePlacesService } from '../../services/nice-places.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map, of, tap } from 'rxjs';
-import { NicePlace } from '../models/nice-place.model';
+import { NicePlace } from '../../../models/nice-place.model';
 import { ToastrService } from 'ngx-toastr';
+import { Comment } from 'src/app/models/comments.model';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-one-nice-place',
@@ -18,6 +21,8 @@ export class OneNicePlaceComponent {
   currentUser: any;
   nicePlaces: NicePlace[] = [];
   editMode = false;
+  comments: Comment[] = [];
+  commentCtrl = new FormControl('');
 
   @Output() postCommented = new EventEmitter<{
     comment: string;
@@ -104,7 +109,6 @@ export class OneNicePlaceComponent {
       member_id: this.currentUser.id,
       likes: nicePlace.likes,
       dislikes: nicePlace.dislikes,
-      editDate: new Date(),
     };
 
     this.nps.updateNicePlace(nicePlace.id, updatedData).subscribe(
@@ -155,7 +159,15 @@ export class OneNicePlaceComponent {
     this.editNicePlace.emit(nicePlace);
   }
 
-  // onNewComment(comment: string) {
-  //   const nicePlaceId = +this.route.snapshot.params['id'];
-  //   this.postCommented.emit({ comment, nicePlace
+  // onLeaveComment() {
+  //   const newComment: Comment = {
+  //     id: /* générer un nouvel ID */,
+  //     userId: /* l'ID de l'utilisateur actuel */,
+  //     comment: this.commentCtrl.value ?? '',  // Utilisation de l'opérateur de coalescence nulle
+  //     createdDate: new Date().toISOString()  // ou utilisez une fonction pour obtenir la date actuelle
+  //   };
+
+  //   this.comments.push(newComment);
+  //   this.commentCtrl.reset();
+  // }
 }

@@ -2,8 +2,8 @@ import { Component, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, map, tap } from 'rxjs';
-import { NicePlace } from '../models/nice-place.model';
-import { NicePlacesService } from '../services/nice-places.service';
+import { NicePlace } from '../../../models/nice-place.model';
+import { NicePlacesService } from '../../services/nice-places.service';
 import { LocalStoreService } from '../../join-in/services/other/local-store.service';
 
 @Component({
@@ -85,6 +85,7 @@ export class NewNicePlaceComponent {
       member_id: this.currentUser.id,
       likes: this.editNicePlaceData ? this.editNicePlaceData.likes : 0,
       dislikes: this.editNicePlaceData ? this.editNicePlaceData.dislikes : 0,
+      // createdDate: new Date(), // Actualisation createdDate pendant edit
     };
 
     if (this.editNicePlaceData) {
