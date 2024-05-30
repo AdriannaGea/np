@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { NicePlace } from '../models/nice-place.model';
-import { NicePlacesService } from '../services/nice-places.service';
+import { NicePlace } from '../../../models/nice-place.model';
+import { NicePlacesService } from '../../services/nice-places.service';
 
 @Component({
   selector: 'app-nice-places',

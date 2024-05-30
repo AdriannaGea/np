@@ -2,8 +2,8 @@ import { Component, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, map, tap } from 'rxjs';
-import { NicePlace } from '../models/nice-place.model';
-import { NicePlacesService } from '../services/nice-places.service';
+import { NicePlace } from '../../../models/nice-place.model';
+import { NicePlacesService } from '../../services/nice-places.service';
 import { LocalStoreService } from '../../join-in/services/other/local-store.service';
 
 @Component({
@@ -48,7 +48,6 @@ export class NewNicePlaceComponent {
       map((formValue: any) => ({
         ...formValue,
         createdDate: new Date(),
-        editDate: new Date(),
         likes: 0,
         dislikes: 0,
         id: 0,
@@ -76,7 +75,7 @@ export class NewNicePlaceComponent {
 
   // Soumission du formulaire
   onSubmitForm() {
-    const { title, description, imageUrl, location, editDate } = this.placeForm.value;
+    const { title, description, imageUrl, location } = this.placeForm.value;
 
     const postData = {
       title,
@@ -86,7 +85,7 @@ export class NewNicePlaceComponent {
       member_id: this.currentUser.id,
       likes: this.editNicePlaceData ? this.editNicePlaceData.likes : 0,
       dislikes: this.editNicePlaceData ? this.editNicePlaceData.dislikes : 0,
-      editDate
+      // createdDate: new Date(), // Actualisation createdDate pendant edit
     };
 
     if (this.editNicePlaceData) {

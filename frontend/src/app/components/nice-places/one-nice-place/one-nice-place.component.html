@@ -1,4 +1,5 @@
 <mat-card *ngIf="nicePlace$ | async as nicePlace">
+
   <mat-card-header>
     <mat-card-title>
       <h2>{{ nicePlace.title | uppercase }}</h2>
@@ -7,28 +8,49 @@
       Mis en ligne
       {{ nicePlace.createdDate | date : "à HH:mm, le d MMMM yyyy" }}
     </mat-card-subtitle>
-    <!-- <mat-card-subtitle>
+    <mat-card-subtitle>
       Modifié le
-      {{ nicePlace.editDate | date : "à HH:mm, le d MMMM yyyy" }}
-    </mat-card-subtitle> -->
+      <!-- {{ nicePlace.editDate | date : "à HH:mm, le d MMMM yyyy" }} -->
+    </mat-card-subtitle>
   </mat-card-header>
-  <img mat-card-image [src]="nicePlace.imageUrl" [alt]="nicePlace.title" />
-  <mat-card-content>
-    <p>{{ nicePlace.description }}</p>
-    <p *ngIf="nicePlace.location">Nice place à {{ nicePlace.location }}</p>
-    <div>
-      <button (click)="onLike(nicePlace.id, 'like')">{{ buttonText }}</button>
-      <span>{{ nicePlace.likes }}</span>
-    </div>
-    <div>
-      <button (click)="onLike(nicePlace.id, 'dislike')">{{ dislikeButtonText }}</button>
-      <span>{{ nicePlace.dislikes }}</span>
-    </div>
-    <!-- Les buttons afficher que l'user est connecter -->
-    <div *ngIf="currentUser && nicePlace.member_id === currentUser.id">
-<button mat-button (click)="editMode = !editMode; editClicked(nicePlace)">Edit</button>
 
-      <button mat-button color="warn" (click)="deletePlace(nicePlace)">Delete</button>
+  <img mat-card-image [src]="nicePlace.imageUrl" [alt]="nicePlace.title" />
+
+  <mat-card-content>
+
+    <p>{{ nicePlace.description }}</p>
+
+    <p *ngIf="nicePlace.location">Nice place à {{ nicePlace.location }}</p>
+
+ <div style="display: flex; justify-content: flex-start; align-items: center">
+
+  <span
+    (click)="onLike(nicePlace.id, 'like')"
+    style="cursor: pointer; margin-right: 10px"
+  >
+    {{ buttonText === 'Like It!' ? '👍' : '👎' }}
+  </span>
+  <span>{{ nicePlace.likes }}</span>
+
+  <span
+    (click)="onLike(nicePlace.id, 'dislike')"
+    style="cursor: pointer; margin-left: 10px"
+  >
+    {{ dislikeButtonText === 'Dislike It!' ? '👎' : '👍' }}
+  </span>
+  <span>{{ nicePlace.dislikes }}</span>
+</div>
+
+<app-comments></app-comments>
+
+ <div style="display: flex; justify-content: flex-end;" *ngIf="currentUser && nicePlace.member_id === currentUser.id">
+      <button mat-button (click)="editMode = !editMode; editClicked(nicePlace)">
+        Edit
+      </button>
+
+      <button mat-button color="warn" (click)="deletePlace(nicePlace)">
+        Delete
+      </button>
     </div>
   </mat-card-content>
 </mat-card>

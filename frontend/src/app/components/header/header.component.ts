@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { NicePlace } from '../nice-places/models/nice-place.model';
-import { NicePlacesService } from '../nice-places/services/nice-places.service';
+import { NicePlace } from '../../models/nice-place.model';
+import { NicePlacesService } from '../services/nice-places.service';
 
 @Component({
   selector: 'app-header',

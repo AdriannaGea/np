@@ -1,8 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, switchMap, tap, throwError } from 'rxjs';
-import { NicePlace } from '../models/nice-place.model';
 import { environment } from 'src/app/environments/environment';
+import { NicePlace } from 'src/app/models/nice-place.model';
 
 @Injectable({
   providedIn: 'root',
@@ -86,7 +86,7 @@ export class NicePlacesService {
     id: number,
     updatedData: Partial<NicePlace>
   ): Observable<NicePlace> {
-    updatedData.editDate = new Date();
+    // updatedData.editDate = new Date();
 
     return this.http.put<NicePlace>(
       `${this.apiUrl}/niceplaces/${id}`,
@@ -102,5 +102,9 @@ export class NicePlacesService {
   // Verification qui est le poprieter de ce Nice Place
   isOwnerOfNicePlace(nicePlace: NicePlace, userId: number): boolean {
     return nicePlace.member_id === userId;
+  }
+  // Pobieranie komentarzy dla konkretnego miejsca
+  getCommentsByPostId(postId: number): Observable<Comment[]> {
+    return this.http.get<Comment[]>(`${this.apiUrl}/comments/${postId}`);
   }
 }

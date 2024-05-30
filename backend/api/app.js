@@ -8,6 +8,7 @@ const { success, error } = require("./functions");
 const bcrypt = require("bcrypt");
 const {sign,verify} = require("jsonwebtoken");
 
+const CommentsRouter = express.Router();
 const createToken = (user) => {
 const dataStoredToken = { id: user.id};
 const expiresIn = 60 * 60;
@@ -56,25 +57,24 @@ db.connect((err) => {
       })
       .post((req, res) => {
         // Extraction des données du corps de la requête
-        const { title, description, imageUrl, location, tags , member_id} = req.body;
+        const { title, description, imageUrl, location, member_id } =
+          req.body;
         // Requête SQL pour insérer un nouveau lieu dans la base de données
         const createdDate = new Date();
         const editDate = new Date();
         const likes = 0;
         const dislikes = 0;
         db.query(
-          "INSERT INTO niceplaces (title, description, imageUrl, createdDate, editDate, location, likes, dislikes, tags,member_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          "INSERT INTO niceplaces (title, description, imageUrl, createdDate, location, likes, dislikes, member_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
           [
             title,
             description,
             imageUrl,
             createdDate,
-            editDate,
             location,
             likes,
             dislikes,
-            tags,
-            member_id
+            member_id,
           ],
           (err, result) => {
             if (err) {
@@ -132,12 +132,11 @@ db.connect((err) => {
         } = req.body;
         // Requête SQL pour mettre à jour un lieu spécifique par son ID
         db.query(
-          "UPDATE niceplaces SET title = ?, description = ?, imageUrl = ?, createdDate = ?, editDate = ?, location = ?, likes = ?, dislikes = ?, tags = ? WHERE id = ?",
+          "UPDATE niceplaces SET title = ?, description = ?, imageUrl = ?, editDate = ?, location = ?, likes = ?, dislikes = ?, tags = ? WHERE id = ?",
           [
             title,
             description,
             imageUrl,
-            createdDate,
             editDate,
             location,
             likes,
@@ -414,51 +413,49 @@ db.connect((err) => {
     const LoginRouter = express.Router();
 
     // Endpoint pour la connexion d'un utilisateur
-   LoginRouter.route("/").post((req, res) => {
-     const { email, password } = req.body;
+    LoginRouter.route("/").post((req, res) => {
+      const { email, password } = req.body;
 
-     // Validation de la clé JWT
-     if (!config.jwtKey || config.jwtKey.trim() === "") {
-       console.error("La clé JWT n'est pas définie ou est vide");
-       return res.json(error("Erreur interne du serveur"));
-     }
+      // Validation de la clé JWT
+      if (!config.jwtKey || config.jwtKey.trim() === "") {
+        console.error("La clé JWT n'est pas définie ou est vide");
+        return res.json(error("Erreur interne du serveur"));
+      }
 
-     db.query(
-       "SELECT * FROM members WHERE email = ?",
-       [email],
-       async (err, result) => {
-         if (err) {
-           // Erreur lors de la requête SQL
-           res.json(error(err.message));
-         } else {
-           if (result.length > 0) {
-             const isPasswordValid = await bcrypt.compare(
-               password,
-               result[0].password
-             );
+      db.query(
+        "SELECT * FROM members WHERE email = ?",
+        [email],
+        async (err, result) => {
+          if (err) {
+            // Erreur lors de la requête SQL
+            res.json(error(err.message));
+          } else {
+            if (result.length > 0) {
+              const isPasswordValid = await bcrypt.compare(
+                password,
+                result[0].password
+              );
 
-             if (isPasswordValid) {
-              //  Génération du token JWT en cas de succès
-               const token = createToken(result)
-               res.json(success({ token: token,user: result }));
-             } else {
-               // Identifiants invalides
-               res.json(error("Identifiants invalides"));
-             }
-           } else {
-             // Identifiants invalides
-             res.json(error("Identifiants invalides"));
-           }
-         }
-       }
-     );
-   });
-
+              if (isPasswordValid) {
+                //  Génération du token JWT en cas de succès
+                const token = createToken(result);
+                res.json(success({ token: token, user: result }));
+              } else {
+                // Identifiants invalides
+                res.json(error("Identifiants invalides"));
+              }
+            } else {
+              // Identifiants invalides
+              res.json(error("Identifiants invalides"));
+            }
+          }
+        }
+      );
+    });
 
     // Utilisation du routeur pour l'endpoint "members"
-   app.use(config.rootAPI + "login", LoginRouter);
-   app.use(config.rootAPI + "members", MembersRouter);
-
+    app.use(config.rootAPI + "login", LoginRouter);
+    app.use(config.rootAPI + "members", MembersRouter);
 
     function success(data) {
       return { success: true, data: data };
