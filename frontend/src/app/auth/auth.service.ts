@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, tap } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
-import { LocalStoreService } from '../components/join-in/services/other/local-store.service';
+import { LocalStoreService } from '../services/services-join/other/local-store.service';
 
 @Injectable({
   providedIn: 'root',

@@ -1,8 +1,8 @@
 export interface Comment {
-  id: number;
+  id?: number;
   userId: number;
   comment: string;
-  // createdDate: string; // Zmieniono typ na string
-  member_id: number;
+  // createdDate: string;
   postId: number;
+  member_id?: number;
 }

@@ -3,16 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, switchMap, tap, throwError } from 'rxjs';
 import { environment } from 'src/app/environments/environment';
 import { NicePlace } from 'src/app/models/nice-place.model';
+import { Comment } from '../models/comments.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NicePlacesService {
-  // Méthode non implémentée pour ajouter un tag à un Nice Place
-  addTagToNicePlace(placeId: any, tagName: string) {
-    throw new Error('Méthode non implémentée.');
-  }
-
   // URL de l'API récupérée depuis la configuration de l'environnement
   private apiUrl = environment.apiUrl;
 
@@ -21,6 +17,14 @@ export class NicePlacesService {
   // Récupérer tous les Nice Places depuis l'API
   getAllNicePlaces(): Observable<NicePlace[]> {
     return this.http.get<NicePlace[]>(`${this.apiUrl}/niceplaces`);
+  }
+  // Récupération un Nice Place spécifique par son ID
+  getNicePlaceById(
+    id: number
+  ): Observable<{ status: string; data: NicePlace }> {
+    return this.http.get<{ status: string; data: NicePlace }>(
+      `${this.apiUrl}/niceplaces/${id}`
+    );
   }
 
   // Ajouter un nouveau Nice Place via un formulaire
@@ -39,13 +43,27 @@ export class NicePlacesService {
     return this.http.post<NicePlace>(`${this.apiUrl}/niceplaces`, formValue);
   }
 
-  // Récupération un Nice Place spécifique par son ID
-  getNicePlaceById(
-    id: number
-  ): Observable<{ status: string; data: NicePlace }> {
-    return this.http.get<{ status: string; data: NicePlace }>(
-      `${this.apiUrl}/niceplaces/${id}`
+  // Actualisation de Nice Place
+  updateNicePlace(
+    id: number,
+    updatedData: Partial<NicePlace>
+  ): Observable<NicePlace> {
+    // updatedData.editDate = new Date();
+
+    return this.http.put<NicePlace>(
+      `${this.apiUrl}/niceplaces/${id}`,
+      updatedData
     );
+  }
+
+  // Suppresion de Nice PlACE
+  deleteNicePlace(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/niceplaces/${id}`);
+  }
+
+  // Verification qui est le poprieter de ce Nice Place
+  isOwnerOfNicePlace(nicePlace: NicePlace, userId: number): boolean {
+    return nicePlace.member_id === userId;
   }
 
   // Mise à jour le nombre de likes ou de dislikes d'un Nice Place par son ID
@@ -81,30 +99,11 @@ export class NicePlacesService {
     );
   }
 
-  // Actualisation de Nice Place
-  updateNicePlace(
-    id: number,
-    updatedData: Partial<NicePlace>
-  ): Observable<NicePlace> {
-    // updatedData.editDate = new Date();
-
-    return this.http.put<NicePlace>(
-      `${this.apiUrl}/niceplaces/${id}`,
-      updatedData
-    );
+  getComments(): Observable<Comment[]> {
+    return this.http.get<Comment[]>(`${this.apiUrl}/comments`);
   }
 
-  // Suppresion de Nice PlACE
-  deleteNicePlace(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/niceplaces/${id}`);
-  }
-
-  // Verification qui est le poprieter de ce Nice Place
-  isOwnerOfNicePlace(nicePlace: NicePlace, userId: number): boolean {
-    return nicePlace.member_id === userId;
-  }
-  // Pobieranie komentarzy dla konkretnego miejsca
-  getCommentsByPostId(postId: number): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`${this.apiUrl}/comments/${postId}`);
+  addComment(comment: Comment): Observable<Comment> {
+    return this.http.post<Comment>(`${this.apiUrl}/comments`, comment);
   }
 }

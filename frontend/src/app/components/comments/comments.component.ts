@@ -22,8 +22,8 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { flashAnimation } from 'src/app/shared/animations/flash.animation';
 import { slideAndFadeAnimation } from 'src/app/shared/animations/slide-and-fade.animation';
 import { HttpErrorResponse } from '@angular/common/http';
-import { NicePlacesService } from 'src/app/components/services/nice-places.service';
-import { Comment } from '../../../models/comments.model';
+import { NicePlacesService } from 'src/app/services/nice-places.service';
+import { Comment } from '../../models/comments.model';
 
 @Component({
   selector: 'app-comments',
@@ -48,7 +48,7 @@ import { Comment } from '../../../models/comments.model';
         'active',
         style({
           transform: 'scale(1.05)',
-          'background-color': 'violet',
+          'background-color': 'beige',
           'z-index': 2,
         })
       ),
@@ -58,7 +58,7 @@ import { Comment } from '../../../models/comments.model';
         style({
           transform: 'translateX(-100%)',
           opacity: 0,
-          'background-color': 'violet',
+          'background-color': 'beige',
         }),
         animate(
           '250ms ease-out',
@@ -78,14 +78,14 @@ import { Comment } from '../../../models/comments.model';
         useAnimation(slideAndFadeAnimation, {
           params: {
             time: '500ms',
-            startColor: 'violet',
+            startColor: 'beige',
           },
         }),
         group([
           useAnimation(flashAnimation, {
             params: {
               time: '250ms',
-              flashColor: 'violet',
+              flashColor: 'beige',
             },
           }),
           query('.comment-text', [
@@ -134,11 +134,11 @@ export class CommentsComponent implements OnInit {
     if (!this.postId) {
       return;
     }
-    this.nps.getCommentsByPostId(this.postId).subscribe(
+    this.nps.getComments().subscribe(
       (data: any) => {
         this.comments = data.map((comment: any) => ({
           ...comment,
-          createdDate: comment.createdDate, // Używamy wartości string bez konwersji
+          // createdDate: comment.createdDate, // Używamy wartości string bez konwersji
         }));
         for (let index in this.comments) {
           this.animationStates[index] = 'default';
@@ -154,9 +154,9 @@ export class CommentsComponent implements OnInit {
     if (this.commentCtrl.invalid) {
       return;
     }
-    const maxId = Math.max(...this.comments.map((comment) => comment.id));
+    // const maxId = Math.max(...this.comments.map((comment) => comment.id));
     this.comments.unshift({
-      id: maxId + 1,
+      id: 1,
       comment: this.commentCtrl.value,
       userId: 1,
       member_id: 1, // Upewnij się, że masz dostęp do member_id, jeśli jest potrzebne

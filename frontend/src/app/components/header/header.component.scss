@@ -7,3 +7,64 @@
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 }
+
+.landing-card {
+  width: auto;
+  margin: auto;
+  margin-top: 50px;
+  text-align: center;
+  color: #797979;
+  background-color: rgba(255, 255, 255, 0.505);
+  box-shadow: lightgray 4px 4px 20px;
+}
+
+.landing-title {
+  font-size: 20px;
+  color: #797979;
+  margin-bottom: 10px;
+}
+
+.email-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #797979;
+  margin-top: 10px;
+}
+
+#emailInput {
+  width: 70%;
+  padding: 10px;
+  font-size: 16px;
+  color: #797979;
+  background-color: rgba(255, 255, 255, 0.505);
+  box-shadow: lightgray 4px 4px 20px;
+}
+
+#emailInput::placeholder {
+  color: #797979;
+}
+
+button {
+  font-size: 16px;
+  padding: 10px 20px;
+  color: #797979;
+  background-color: rgba(255, 255, 255, 0.505);
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: lightgray 4px 4px 20px;
+}
+
+button:hover {
+  color: #797979;
+  background-color: #ffffff91 !important;
+}
+
+.landing-links button {
+  color: #797979;
+  background-color: #ffffff91 !important;
+}
+
+.landing-links button:hover {
+  background-color: lightgray;
+}

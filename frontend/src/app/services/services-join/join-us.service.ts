@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, delay, mapTo, of } from 'rxjs';
 import { environment } from 'src/app/environments/environment.prod';
-import { JoinUsValue } from '../models/join-us-value.model';
+import { JoinUsValue } from 'src/app/models/join-us-value.model';
+
 
 @Injectable({
   providedIn: 'root',

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { NicePlacesService } from '../../services/nice-places.service';
+import { NicePlacesService } from '../../../services/nice-places.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map, of, tap } from 'rxjs';
 import { NicePlace } from '../../../models/nice-place.model';
@@ -8,6 +8,8 @@ import { Comment } from 'src/app/models/comments.model';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl } from '@angular/forms';
+import { NewNicePlaceComponent } from '../new-nice-place/new-nice-place.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-one-nice-place',
@@ -35,7 +37,8 @@ export class OneNicePlaceComponent {
     private nps: NicePlacesService,
     private route: ActivatedRoute,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -106,9 +109,9 @@ export class OneNicePlaceComponent {
       description: nicePlace.description,
       imageUrl: nicePlace.imageUrl,
       location: nicePlace.location,
-      member_id: this.currentUser.id,
-      likes: nicePlace.likes,
-      dislikes: nicePlace.dislikes,
+      // member_id: this.currentUser.id,
+      // likes: nicePlace.likes,
+      // dislikes: nicePlace.dislikes,
     };
 
     this.nps.updateNicePlace(nicePlace.id, updatedData).subscribe(
@@ -157,6 +160,15 @@ export class OneNicePlaceComponent {
   editClicked(nicePlace: NicePlace) {
     this.editMode = true;
     this.editNicePlace.emit(nicePlace);
+  }
+
+  scrollToBottom() {
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth',
+      });
+    }, 100);
   }
 
   // onLeaveComment() {

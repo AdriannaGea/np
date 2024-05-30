@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NicePlace } from '../../models/nice-place.model';
-import { NicePlacesService } from '../services/nice-places.service';
+import { NicePlacesService } from '../../services/nice-places.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';

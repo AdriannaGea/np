@@ -7,8 +7,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { Observable, map, startWith, tap } from 'rxjs';
-import { JoinUsService } from '../services/join-us.service';
-import { confirmEqualValidator } from '../validators/confirm-equal.validator';
+import { JoinUsService } from '../services/services-join/join-us.service';
+import { confirmEqualValidator } from './validators/confirm-equal.validator';
+
 
 @Component({
   selector: 'app-join-us',

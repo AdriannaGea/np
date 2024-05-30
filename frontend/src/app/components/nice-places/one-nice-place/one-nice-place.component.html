@@ -1,5 +1,4 @@
 <mat-card *ngIf="nicePlace$ | async as nicePlace">
-
   <mat-card-header>
     <mat-card-title>
       <h2>{{ nicePlace.title | uppercase }}</h2>
@@ -8,54 +7,44 @@
       Mis en ligne
       {{ nicePlace.createdDate | date : "à HH:mm, le d MMMM yyyy" }}
     </mat-card-subtitle>
-    <mat-card-subtitle>
-      Modifié le
-      <!-- {{ nicePlace.editDate | date : "à HH:mm, le d MMMM yyyy" }} -->
-    </mat-card-subtitle>
   </mat-card-header>
 
   <img mat-card-image [src]="nicePlace.imageUrl" [alt]="nicePlace.title" />
 
   <mat-card-content>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <p>{{ nicePlace.description }}</p>
+        <p *ngIf="nicePlace.location">Nice place à {{ nicePlace.location }}</p>
+      </div>
 
-    <p>{{ nicePlace.description }}</p>
+      <!-- Przeniesione przyciski do tej samej linii co opis -->
+      <div *ngIf="currentUser && nicePlace.member_id === currentUser.id">
+        <button mat-icon-button (click)="editMode = !editMode; editClicked(nicePlace); scrollToBottom()">
+          <mat-icon>edit</mat-icon>
+        </button>
 
-    <p *ngIf="nicePlace.location">Nice place à {{ nicePlace.location }}</p>
-
- <div style="display: flex; justify-content: flex-start; align-items: center">
-
-  <span
-    (click)="onLike(nicePlace.id, 'like')"
-    style="cursor: pointer; margin-right: 10px"
-  >
-    {{ buttonText === 'Like It!' ? '👍' : '👎' }}
-  </span>
-  <span>{{ nicePlace.likes }}</span>
-
-  <span
-    (click)="onLike(nicePlace.id, 'dislike')"
-    style="cursor: pointer; margin-left: 10px"
-  >
-    {{ dislikeButtonText === 'Dislike It!' ? '👎' : '👍' }}
-  </span>
-  <span>{{ nicePlace.dislikes }}</span>
-</div>
-
-<app-comments></app-comments>
-
- <div style="display: flex; justify-content: flex-end;" *ngIf="currentUser && nicePlace.member_id === currentUser.id">
-      <button mat-button (click)="editMode = !editMode; editClicked(nicePlace)">
-        Edit
-      </button>
-
-      <button mat-button color="warn" (click)="deletePlace(nicePlace)">
-        Delete
-      </button>
+        <!-- Przycisk Usuwania -->
+        <button mat-icon-button color="warn" (click)="deletePlace(nicePlace)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
     </div>
+
+    <div style="display: flex; justify-content: flex-start; align-items: center">
+      <span (click)="onLike(nicePlace.id, 'like')" style="cursor: pointer; margin-right: 10px">
+        {{ buttonText === "Like It!" ? "👍" : "👎" }}
+      </span>
+      <span>{{ nicePlace.likes }}</span>
+
+      <span (click)="onLike(nicePlace.id, 'dislike')" style="cursor: pointer; margin-left: 10px">
+        {{ dislikeButtonText === "Dislike It!" ? "👎" : "👍" }}
+      </span>
+      <span>{{ nicePlace.dislikes }}</span>
+    </div>
+
+    <app-comments></app-comments>
   </mat-card-content>
 </mat-card>
 
-<app-new-nice-place
-  *ngIf="editMode"
-  [editNicePlaceData]="nicePlace$ | async"
-></app-new-nice-place>
+<app-new-nice-place *ngIf="editMode" [editNicePlaceData]="nicePlace$ | async"></app-new-nice-place>

@@ -5,10 +5,11 @@ import { HeaderComponent } from './components/header/header.component';
 import { OneNicePlaceComponent } from './components/nice-places/one-nice-place/one-nice-place.component';
 import { NewNicePlaceComponent } from './components/nice-places/new-nice-place/new-nice-place.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { JoinUsComponent } from './components/join-in/join-us/join-us.component';
-import { AuthGuard } from './auth/auth.guard';
+
 import { LogInComponent } from './auth/component/log-in.component';
 import { NicePlacesListComponent } from './components/nice-places/nice-places-list.component';
+import { JoinUsComponent } from './join-in/join-us.component';
+import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   {

@@ -9,7 +9,7 @@ import { NewNicePlaceComponent } from './nice-places/new-nice-place/new-nice-pla
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HeaderComponent } from './header/header.component';
 import { AuthModule } from '../auth/auth.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { NicePlacesListComponent } from './nice-places/nice-places-list.component';
 import { NicePlacesComponent } from './nice-places/nice-places/nice-places.component';
@@ -31,6 +31,7 @@ import { NicePlacesComponent } from './nice-places/nice-places/nice-places.compo
     AuthModule,
     ReactiveFormsModule,
     SharedModule,
+    FormsModule,
   ],
   exports: [NavComponent],
 })

@@ -1,10 +1,10 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, map, tap } from 'rxjs';
 import { NicePlace } from '../../../models/nice-place.model';
-import { NicePlacesService } from '../../services/nice-places.service';
-import { LocalStoreService } from '../../join-in/services/other/local-store.service';
+import { NicePlacesService } from '../../../services/nice-places.service';
+import { LocalStoreService } from 'src/app/services/services-join/other/local-store.service';
 
 @Component({
   selector: 'app-new-nice-place',
@@ -24,7 +24,8 @@ export class NewNicePlaceComponent {
     private fb: FormBuilder,
     private nps: NicePlacesService,
     private router: Router,
-    private local: LocalStoreService
+    private local: LocalStoreService,
+    private el: ElementRef
   ) {}
 
   ngOnInit(): void {

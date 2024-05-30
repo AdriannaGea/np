@@ -1,14 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NicePlace } from '../../../models/nice-place.model';
-import { NicePlacesService } from '../../services/nice-places.service';
+import { NicePlacesService } from '../../../services/nice-places.service';
 
 @Component({
   selector: 'app-nice-places',
   templateUrl: './nice-places.component.html',
   styleUrls: ['./nice-places.component.scss'],
 })
-export class NicePlacesComponent {
+export class NicePlacesComponent implements OnInit {
   @Input() nicePlace!: NicePlace;
   nicePlaces: NicePlace[] = [];
 
@@ -21,13 +21,26 @@ export class NicePlacesComponent {
   loadNicePlaces() {
     this.nps.getAllNicePlaces().subscribe(
       (places: any) => {
-        // console.log(places);
         this.nicePlaces = places['data'];
       },
       (error) => {
         console.error('Error loading nice places: ', error);
       }
     );
+  }
+
+  reloadPlaces() {
+    this.loadNicePlaces(); // Możesz to wywołać po każdej operacji modyfikacji
+  }
+
+  updatePlace(postId: number, updatedData: Partial<NicePlace>) {
+    this.nps.updateNicePlace(postId, updatedData).subscribe({
+      next: (updated) => {
+        console.log('Place updated:', updated);
+        this.reloadPlaces(); // Ponowne załadowanie miejsc po aktualizacji
+      },
+      error: (error) => console.error('Failed to update place', error),
+    });
   }
 
   onViewNicePlace(nicePlace: NicePlace) {

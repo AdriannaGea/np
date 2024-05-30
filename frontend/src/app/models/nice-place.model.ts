@@ -11,4 +11,5 @@ export interface NicePlace {
   tags: string[];
   comments: Comment[];
   member_id: number;
+  editDate: Date;
 }

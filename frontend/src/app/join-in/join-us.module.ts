@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialsModule } from 'src/app/material/material.module';
-import { JoinUsComponent } from './join-us/join-us.component';
+import { JoinUsComponent } from './join-us.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 

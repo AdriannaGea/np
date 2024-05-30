@@ -1,31 +1,16 @@
-<div class="header">
-    <!-- Tutaj możesz umieścić treść, jeśli jest wymagana -->
-</div>
+<div class="header"></div>
 
-
-<!-- Wyszukiwarka -->
-<!-- <mat-form-field>
-  <input matInput placeholder="Search..">
-  <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchText" (click)="clearSearch()">
-    <mat-icon>close</mat-icon>
-  </button>
-</mat-form-field> -->
-
-<!-- Przyciski Refresh i Szukaj -->
-<!-- <div>
-  <button mat-raised-button color="primary" (click)="refresh()">Refresh</button>
-  <button mat-raised-button color="primary" (click)="search()">Search</button>
-</div> -->
-
-<!-- Kategorie restauracji -->
-<!-- <div>
-  <mat-button-toggle-group #group="matButtonToggleGroup" >
-    <mat-button-toggle value="chic">Restauracje Chic</mat-button-toggle>
-    <mat-button-toggle value="pascher">Bary Pas Cher</mat-button-toggle>
-    <mat-button-toggle value="chicbars">Bary Chic</mat-button-toggle>
-    <mat-button-toggle value="oldbars">Bary Vieux</mat-button-toggle>
-  </mat-button-toggle-group>
-</div> -->
-
-<!-- <app-nice-places *ngFor="let nicePlace of nicePlaces$ | async" [nicePlace]="nicePlace"></app-nice-places> -->
-
+<mat-card class="landing-card">
+  <mat-card-content>
+    <mat-card-title class="landing-title">Inscrivez-vous pour recevoir notre newsletter !</mat-card-title>
+    <form #emailForm="ngForm" (ngSubmit)="onSubmitForm(emailForm)">
+      <div class="email-input-container">
+        <input id="emailInput" name="userEmail" type="email" [(ngModel)]="userEmail" placeholder="Votre adresse e-mail">
+        <button type="submit" mat-raised-button>OK!</button>
+      </div>
+    </form>
+    <div class="landing-links">
+      <button (click)="onContinue()" mat-raised-button>Continuer vers Nice Places</button>
+    </div>
+  </mat-card-content>
+</mat-card>

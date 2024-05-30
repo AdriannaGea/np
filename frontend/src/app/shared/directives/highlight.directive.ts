@@ -18,7 +18,7 @@ export class HighlightDirective implements AfterViewInit {
   }
 
   @HostListener('mouseenter') onMouseEnter() {
-    this.setBackgroundColor('violet');
+    this.setBackgroundColor('beige');
   }
 
   @HostListener('mouseleave') onMouseLeave() {
@@ -26,6 +26,6 @@ export class HighlightDirective implements AfterViewInit {
   }
 
   @HostListener('click') onClick() {
-    this.color = 'violet';
+    this.color = 'beige';
   }
 }
