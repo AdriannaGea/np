@@ -8,6 +8,7 @@ const { success, error } = require("./functions");
 const bcrypt = require("bcrypt");
 const {sign,verify} = require("jsonwebtoken");
 
+const CommentsRouter = express.Router();
 const createToken = (user) => {
 const dataStoredToken = { id: user.id};
 const expiresIn = 60 * 60;
@@ -56,7 +57,7 @@ db.connect((err) => {
       })
       .post((req, res) => {
         // Extraction des données du corps de la requête
-        const { title, description, imageUrl, location, tags, member_id } =
+        const { title, description, imageUrl, location, member_id } =
           req.body;
         // Requête SQL pour insérer un nouveau lieu dans la base de données
         const createdDate = new Date();
@@ -64,17 +65,15 @@ db.connect((err) => {
         const likes = 0;
         const dislikes = 0;
         db.query(
-          "INSERT INTO niceplaces (title, description, imageUrl, createdDate, editDate, location, likes, dislikes, tags,member_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          "INSERT INTO niceplaces (title, description, imageUrl, createdDate, location, likes, dislikes, member_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
           [
             title,
             description,
             imageUrl,
             createdDate,
-            editDate,
             location,
             likes,
             dislikes,
-            tags,
             member_id,
           ],
           (err, result) => {
@@ -133,12 +132,11 @@ db.connect((err) => {
         } = req.body;
         // Requête SQL pour mettre à jour un lieu spécifique par son ID
         db.query(
-          "UPDATE niceplaces SET title = ?, description = ?, imageUrl = ?, createdDate = ?, editDate = ?, location = ?, likes = ?, dislikes = ?, tags = ? WHERE id = ?",
+          "UPDATE niceplaces SET title = ?, description = ?, imageUrl = ?, editDate = ?, location = ?, likes = ?, dislikes = ?, tags = ? WHERE id = ?",
           [
             title,
             description,
             imageUrl,
-            createdDate,
             editDate,
             location,
             likes,
@@ -455,56 +453,9 @@ db.connect((err) => {
       );
     });
 
-    // Router dla komentarzy
-    const CommentsRouter = express.Router();
-
-    // Endpoint do dodawania komentarza
-   CommentsRouter.route("/").post((req, res) => {
-     const { userId, comment, member_id, postId } = req.body; // dodaj postId
-
-     const createdDate = new Date();
-
-     db.query(
-       "INSERT INTO comments (userId, comment, createdDate, member_id, postId) VALUES (?, ?, ?, ?, ?)", // dodaj postId
-       [userId, comment, createdDate, member_id, postId], // dodaj postId
-       (err, result) => {
-         if (err) {
-           res.json(error(err.message));
-         } else {
-           db.query(
-             "SELECT * FROM comments WHERE id = ?",
-             [result.insertId],
-             (err, result) => {
-               if (err) {
-                 res.json(error(err.message));
-               } else {
-                 res.json(success(result[0]));
-               }
-             }
-           );
-         }
-       }
-     );
-   });
-    // Endpoint do pobierania komentarzy dla konkretnego miejsca
-    CommentsRouter.route("/:id").get((req, res) => {
-      db.query(
-        "SELECT * FROM comments WHERE postId = ?",
-        [req.params.id],
-        (err, result) => {
-          if (err) {
-            res.json(error(err.message));
-          } else {
-            res.json(success(result));
-          }
-        }
-      );
-    });
-
     // Utilisation du routeur pour l'endpoint "members"
     app.use(config.rootAPI + "login", LoginRouter);
     app.use(config.rootAPI + "members", MembersRouter);
-    app.use(config.rootAPI + "comments", CommentsRouter);
 
     function success(data) {
       return { success: true, data: data };
