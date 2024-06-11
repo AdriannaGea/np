@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { NicePlacesListComponent } from './nice-places/nice-places-list.component';
 import { NicePlacesComponent } from './nice-places/nice-places/nice-places.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { NicePlacesComponent } from './nice-places/nice-places/nice-places.compo
     NotFoundComponent,
     HeaderComponent,
     NicePlacesListComponent,
+    FooterComponent,
   ],
   imports: [
     CommonModule,
@@ -33,6 +35,6 @@ import { NicePlacesComponent } from './nice-places/nice-places/nice-places.compo
     SharedModule,
     FormsModule,
   ],
-  exports: [NavComponent],
+  exports: [NavComponent, FooterComponent],
 })
 export class ComponentsModule {}

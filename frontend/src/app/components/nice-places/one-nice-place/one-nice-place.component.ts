@@ -25,6 +25,7 @@ export class OneNicePlaceComponent {
   editMode = false;
   comments: Comment[] = [];
   commentCtrl = new FormControl('');
+  postId!: number;
 
   @Output() postCommented = new EventEmitter<{
     comment: string;
@@ -54,6 +55,9 @@ export class OneNicePlaceComponent {
     this.nicePlace$ = this.nps
       .getNicePlaceById(nicePlaceId)
       .pipe(map((response: any) => response['data']));
+this.route.params.subscribe((params) => {
+      this.postId = +params['id'];
+  });
   }
 
   onLike(nicePlaceId: number, likeType: 'like' | 'dislike') {

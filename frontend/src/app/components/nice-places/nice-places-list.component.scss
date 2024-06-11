@@ -24,8 +24,9 @@ mat-form-field {
 }
 
 .search-button {
-  align-self: flex-end !important;
-  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
 .toggle-container {
@@ -42,4 +43,3 @@ mat-form-field {
 .mat-button-toggle.mat-button-toggle-checked {
   background-color: beige;
 }
-

@@ -6,7 +6,7 @@
   </ul>
   <div class="spacer"></div>
   <ul>
-    <li>Quel est votre lieu sympa ? <button (click)="onAddNewNicePlace()">+</button></li>
+    <li>Quel est votre nice place? &nbsp; <button (click)="onAddNewNicePlace()">+</button></li>
     <li>
       <ng-container *ngIf="isLoggedIn; else loginTemplate">
         <!-- Bouton de déconnexion -->
@@ -17,7 +17,7 @@
         <a mat-button routerLink="auth/login">Connexion</a>
       </ng-template>
     </li>
-    <!-- Warunkowe wyświetlenie przycisku "Rejoignez-nous" -->
+    <!-- Affichage conditionnel du bouton 'Rejoignez-nous' -->
     <li *ngIf="!isLoggedIn"><a mat-button routerLink="/join-us">Rejoignez-nous</a></li>
   </ul>
 </mat-toolbar>

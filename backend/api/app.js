@@ -453,7 +453,7 @@ db.connect((err) => {
       );
     });
 
-    // Utilisation du routeur pour l'endpoint "members"
+    // Utilisation du routeur pour l'endpoints
     app.use(config.rootAPI + "login", LoginRouter);
     app.use(config.rootAPI + "members", MembersRouter);
 

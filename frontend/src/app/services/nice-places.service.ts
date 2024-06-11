@@ -104,6 +104,13 @@ export class NicePlacesService {
   }
 
   addComment(comment: Comment): Observable<Comment> {
+    console.log(comment);
     return this.http.post<Comment>(`${this.apiUrl}/comments`, comment);
+  }
+
+  getLastThreeNicePlaces(): Observable<NicePlace[]> {
+    return this.getAllNicePlaces().pipe(
+      map((nicePlaces) => nicePlaces.slice(-3).reverse())
+    );
   }
 }

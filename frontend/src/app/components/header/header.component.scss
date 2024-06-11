@@ -33,16 +33,22 @@
 }
 
 #emailInput {
-  width: 70%;
+  width: 40%;
   padding: 10px;
   font-size: 16px;
   color: #797979;
   background-color: rgba(255, 255, 255, 0.505);
+  border: 0;
   box-shadow: lightgray 4px 4px 20px;
 }
 
 #emailInput::placeholder {
   color: #797979;
+}
+
+#emailInput:focus {
+  outline: none;
+  border-color: dodgerblue;
 }
 
 button {

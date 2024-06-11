@@ -6,7 +6,7 @@
       [formControl]="commentCtrl"
     ></textarea>
   </mat-form-field>
-  <button mat-icon-button color="primary" (click)="onLeaveComment()">
+  <button style="display: flex; margin-top: 10px;" mat-icon-button color="primary" (click)="onLeaveComment(); scrollToBottom()" >
     <mat-icon>send</mat-icon>
   </button>
 </div>

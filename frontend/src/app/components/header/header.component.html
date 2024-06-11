@@ -14,3 +14,7 @@
     </div>
   </mat-card-content>
 </mat-card>
+
+<div style="padding: 50px">
+  <app-nice-places *ngFor="let nicePlace of lastThreeNicePlaces$ | async"></app-nice-places>
+</div>

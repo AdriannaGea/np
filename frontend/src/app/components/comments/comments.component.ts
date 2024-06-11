@@ -159,7 +159,7 @@ export class CommentsComponent implements OnInit {
       id: 1,
       comment: this.commentCtrl.value,
       userId: 1,
-      member_id: 1, // Upewnij się, że masz dostęp do member_id, jeśli jest potrzebne
+      member_id: 1,
       postId: this.postId,
     });
     this.newComment.emit(this.commentCtrl.value);
@@ -172,5 +172,14 @@ export class CommentsComponent implements OnInit {
 
   onListItemMouseLeave(index: number) {
     this.animationStates[index] = 'default';
+  }
+
+  scrollToBottom() {
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth',
+      });
+    }, 100);
   }
 }

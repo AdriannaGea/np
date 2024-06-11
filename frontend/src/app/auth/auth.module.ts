@@ -4,6 +4,7 @@ import { CommonModule } from "@angular/common";
 import { AuthRoutingModule } from "./auth-routing.module";
 import { MaterialsModule } from "../material/material.module";
 import { ReactiveFormsModule } from "@angular/forms";
+import { FooterComponent } from '../components/footer/footer.component';
 
 @NgModule({
   declarations: [LogInComponent],

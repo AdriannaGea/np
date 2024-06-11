@@ -12,7 +12,7 @@
       </mat-card-header>
       <img mat-card-image [src]="nicePlace.imageUrl" [alt]="nicePlace.title" />
       <mat-card-content>
-        <p *ngIf="nicePlace.location">Nice place in {{ nicePlace.location }}</p>
+        <p *ngIf="nicePlace.location">Nice place à {{ nicePlace.location }}</p>
         <button mat-button (click)="onViewNicePlace(nicePlace)">VIEW</button>
       </mat-card-content>
     </mat-card>

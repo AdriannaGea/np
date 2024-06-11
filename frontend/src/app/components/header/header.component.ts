@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { NicePlace } from '../../models/nice-place.model';
 import { NicePlacesService } from '../../services/nice-places.service';
 import { NgForm } from '@angular/forms';
@@ -15,6 +15,7 @@ export class HeaderComponent {
   selectedCategory: string = '';
   nicePlaces$!: Observable<NicePlace[]>;
   userEmail!: string;
+  lastThreeNicePlaces$!: Observable<NicePlace[]>;
 
   constructor(private nps: NicePlacesService, private router: Router) {}
 
@@ -27,18 +28,6 @@ export class HeaderComponent {
   }
 
   ngOnInit(): void {
-    this.nicePlaces$ = this.nps.getAllNicePlaces();
-  }
-
-  refresh() {
-    // Implementuj logikę odświeżania
-  }
-
-  search() {
-    // Implementuj logikę wyszukiwania
-  }
-
-  clearSearch() {
-    this.searchText = '';
+    this.lastThreeNicePlaces$ = this.nps.getLastThreeNicePlaces();
   }
 }

@@ -45,4 +45,8 @@ export class LogInComponent {
       }
     );
   }
+
+  onJoin(): void {
+    this.router.navigateByUrl('join-us');
+  }
 }

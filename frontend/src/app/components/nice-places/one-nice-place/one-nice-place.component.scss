@@ -1,9 +1,10 @@
 mat-card {
   background-color: rgb(255, 245, 237);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: auto;
-  margin: 40px;
+  max-width: 800px;
+  margin: 40px auto; /* Ustawienie margin na auto wyśrodkuje kartę poziomo */
 }
+
 
 img {
   width: 100%;
