@@ -31,10 +31,12 @@ const db = mysql.createConnection({
 
 db.connect((err) => {
   //ATTENTION IMPORTANT
+      // afficher les erreurs de connexion a la base de donnees
   if (err) {
-    console.log(err); // afficher les erreurs de connexion a la base de donnees
+    console.log(err);
   } else {
-    console.log("Connecté à la base de données"); // afficher le message de connexion a la base de donnees
+    // afficher le message de connexion a la base de donnees
+    console.log("Connecté à la base de données");
 
     // Router pour les endpoints concernant les lieux
     const NicePlacesRouter = express.Router();
@@ -57,8 +59,7 @@ db.connect((err) => {
       })
       .post((req, res) => {
         // Extraction des données du corps de la requête
-        const { title, description, imageUrl, location, member_id } =
-          req.body;
+        const { title, description, imageUrl, location, member_id } = req.body;
         // Requête SQL pour insérer un nouveau lieu dans la base de données
         const createdDate = new Date();
         const editDate = new Date();

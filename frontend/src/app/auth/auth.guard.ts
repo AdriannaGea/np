@@ -14,7 +14,6 @@ export class AuthGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
 
   // Méthode pour vérifier si l'utilisateur est authentifié
-  // auth.guard.ts
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot

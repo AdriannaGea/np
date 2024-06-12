@@ -11,7 +11,6 @@ const routes: Routes = [
     component: NewNicePlaceComponent,
     canActivate: [AuthGuard],
   },
-  // inne routy
 ];
 
 @NgModule({
